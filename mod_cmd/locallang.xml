@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>texts for the scripts</description>
+        <type>module</type>
+        <csh_table></csh_table>
+        <fileId>EXT:graytree/mod_cmd/locallang.xml</fileId>
+        <labelContext type="array">
+            <label index="tx_graytree_cmd_nothing.title"></label>
+            <label index="tx_graytree_cmd_nothing.message"></label>
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="tx_graytree_cmd_nothing.title">[no command]</label>
+            <label index="tx_graytree_cmd_nothing.message">There's no command given to this module.</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="tx_graytree_cmd_nothing.title">[kein Befehl]</label>
+            <label index="tx_graytree_cmd_nothing.message">Keinen Befehl wurde an den Modul übergeben.</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="tx_graytree_cmd_nothing.title">[aucune commande]</label>
+            <label index="tx_graytree_cmd_nothing.message">Aucune commande n'y a été donné au module.</label>
+        </languageKey>
+    </data>
+    <orig_hash type="array">
+        <languageKey index="default" type="array">
+            <label index="tx_graytree_cmd_nothing.title" type="integer">72590348</label>
+            <label index="tx_graytree_cmd_nothing.message" type="integer">65945249</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="tx_graytree_cmd_nothing.title" type="integer">72590348</label>
+            <label index="tx_graytree_cmd_nothing.message" type="integer">65945249</label>
+        </languageKey>
+        <languageKey index="fr" type="array">
+            <label index="tx_graytree_cmd_nothing.title" type="integer">72590348</label>
+            <label index="tx_graytree_cmd_nothing.message" type="integer">65945249</label>
+        </languageKey>
+    </orig_hash>
+    <orig_text type="array">
+        <languageKey index="default" type="array">
+        </languageKey>
+        <languageKey index="de" type="array">
+        </languageKey>
+        <languageKey index="fr" type="array">
+        </languageKey>
+    </orig_text>
+</T3locallang>
