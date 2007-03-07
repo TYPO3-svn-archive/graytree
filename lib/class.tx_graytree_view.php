@@ -125,12 +125,12 @@ class tx_graytree_View {
 	var $pmIconTagAttributes = array();
 
 	/**
-	 * If true, HTML code is also accumulated in ->tree array during rendering of the tree.
+	 * If TRUE, HTML code is also accumulated in ->tree array during rendering of the tree.
 	 */
 	var $makeHTML=1;
 
 	/**
-	 * If true, records as selected will be stored internally in the ->recs array
+	 * If TRUE, records as selected will be stored internally in the ->recs array
 	 */
 	var $setRecs = 0;
 
@@ -158,8 +158,8 @@ class tx_graytree_View {
 	var $specUIDmap=array();		// Special UIDs for folders (integer-hashes of paths)
 
 		// For arrays:
-	var $data = false;				// Holds the input data array
-	var $dataLookup = false;		// Holds an index with references to the data array.
+	var $data = FALSE;				// Holds the input data array
+	var $dataLookup = FALSE;		// Holds an index with references to the data array.
 
 		// For both types
 	var $stored = array();			// Holds (session stored) information about which items in the tree are unfolded and which are not.
@@ -167,7 +167,7 @@ class tx_graytree_View {
 	var $recs = array();			// Accumulates the displayed records.
 
 	var $pmVar;						// 'PM' variable
-	var $watchDogMax = 500;			// define a watchdog to avoid loops
+	var $watchDogMax = 5000;			// define a watchdog to avoid loops
 
 	/**
 	 * Initialize the tree class. Needs to be overwritten
@@ -213,12 +213,11 @@ class tx_graytree_View {
 
 		// only DLOG output
 		if (TYPO3_DLOG && GRAYTREE_VIEW_DLOG) {
-			t3lib_div::devLog('tx_graytree_View::init eingefügt wird '.$key . ' - '.$leaf, GRAYTREE_EXTkey);
 
 			reset ($this->leafArray);
 			t3lib_div::devLog('leafArray: ', GRAYTREE_EXTkey);
 			foreach ($this->leafArray as $key => $leaf) {
-				t3lib_div::devLog('tx_graytree_View::init $this->leafArray['.$key.'] = '.$leaf , GRAYTREE_EXTkey);
+				t3lib_div::devLog('tx_graytree_View::init $this->leafArray['.$key.'] = '.$leaf->title , GRAYTREE_EXTkey);
 			}
 		}
 
@@ -329,6 +328,37 @@ class tx_graytree_View {
 	 *
 	 ********************************/
 
+
+
+	function processTreeData(&$treeDataArray, $kParent, &$kStack, &$stack)	{
+
+		$treeData = &$treeDataArray[$kParent];
+		$childKey = $treeData['childs']['k'];
+		$childRow = $treeData['childs'][$childKey];
+		$actChildRowKey = $treeData['childs'][$childKey]['k'];
+		$treeData['childs'][$childKey]['k'] = $actChildRowKey + 1;
+		$isLastChild = TRUE;
+		if ($treeData['childs'][$childKey]['k'] < count ($treeData['childs'][$childKey]) - 1)	{
+			$isLastChild = FALSE;
+		} else {
+			$treeData['childs']['k'] = $childKey + 1;
+			if ($treeData['childs']['k'] < count ($treeData['childs']) - 1)	{ //	'k' is first element
+				$isLastChild = FALSE;
+			}
+		}
+
+		if (!$isLastChild)	{ //	deal with the rest later
+			$kStack++;
+			$stack[$kStack] = $kParent;
+		}
+
+		$k = $treeData['childs'][$childKey][$actChildRowKey];
+
+		return $k;
+	}
+
+
+
 	/**
 	 * Fetches the data for the tree
 	 *
@@ -342,7 +372,7 @@ class tx_graytree_View {
 	function &getTree($startuid, $maxDepth=999, $depthData='',$blankLineCode='',$gettreedata='',$addWhereArray = '',$withoutLeaf='')	{
 		if (TYPO3_DLOG && GRAYTREE_VIEW_DLOG) 	t3lib_div::devLog('tx_graytree_View::getTree $startuid = '.$startuid, GRAYTREE_EXTkey);
 
-		//$this->expandAll = true;
+		//$this->expandAll = TRUE;
 
 if(!$gettreedata){
 		$rootRec='';
@@ -387,12 +417,12 @@ if(!$gettreedata){
 }
 
 		$lastArray = array();
-		$lastArray[0] = true;
+		$lastArray[0] = TRUE;
 
 if(!$gettreedata){
 		$imgArray = array('join.gif','joinbottom.gif','plus.gif','plusbottom.gif','minus.gif','minusbottom.gif','line.gif');
 		$img = array();
-		$isNextOpen = false;
+		$isNextOpen = FALSE;
 		$html='';
 
 		foreach ($imgArray as $actImg) {
@@ -439,10 +469,10 @@ if(!$gettreedata){
 		$flipKeyParentIndexArray = array_flip($keyParentIndexArray);
 		$parentIndexCount = count($parentIndexArray);
 		$itemTableCount = count($itemDataArray);
-		$categories_available = true;
-		$treeDataArray[0] = array('leaf' => 0, 'row' => $rootRec, 'parent' => '', 'parentIndex' => 0, 'childs' => array(), 'last' => 1);
+		$categories_available = TRUE;
+		$treeDataArray[0] = array('leaf' => 0, 'row' => $rootRec, 'parent' => '', 'parentIndex' => 0, 'childs' => array(), 'last' => TRUE);
 
-		$bReady = false;
+		$bReady = FALSE;
 		$frontDataIndex = 0;
 		$endDataIndex = $frontDataIndex;
 		$watchdog = 0;
@@ -481,7 +511,7 @@ if(!$gettreedata){
 								$uid,
 								$tableAlias.'.pid,'.$tableAlias.'.uid,'.$tableAlias.'.title,'.$tableAlias.'.navtitle,'.$tableAlias.'.hidden',
 								$addWhereArray[$tableIndex],
-								true
+								TRUE
 							);
 
 						if (count($itemSubidsArray))	{
@@ -495,14 +525,14 @@ if(!$gettreedata){
 							$childArray = array();
 							foreach ($itemSubidsArray as $k => $row)	{
 
-								if($pIndex == '' || (!count($this->limitCatArray[$pIndex]) || !in_array($row['uid'],$this->limitCatArray[$pIndex])) || $gettreedata)	{
+								if($pIndex == '' || (!count($this->limitCatArray[$pIndex]) || !in_array($row['uid'], $this->limitCatArray[$pIndex])) || $gettreedata)	{
 
 									if (!$isNextOpen && !$gettreedata)	{
-										$childArray[] = true;
+										$childArray[] = TRUE;
 										break; // other data is not needed
 									} else {
 										$endDataIndex++;
-										$treeDataArray[$endDataIndex] = array('leaf' => $tableIndex,'row' => $row, 'parent' => $frontDataIndex, 'parentIndex' => $pIndex, 'childs' => array(), 'last' => false);
+										$treeDataArray[$endDataIndex] = array('leaf' => $tableIndex,'row' => $row, 'parent' => $frontDataIndex, 'parentIndex' => $pIndex, 'childs' => array(), 'last' => FALSE);
 
 										$childArray[] = $endDataIndex;
 										$lastAddedIndex = $endDataIndex;
@@ -510,12 +540,20 @@ if(!$gettreedata){
 								}
 							}
 
+							if (count($childArray))	{
+								$childArray['k'] = 0;
+							}
+							if (!isset($treeDataArray[$frontDataIndex]['childs']['k']) || $tableIndex < $treeDataArray[$frontDataIndex]['childs']['k'])	{
+								$treeDataArray[$frontDataIndex]['childs']['k'] = $tableIndex;
+							} else {
+								$treeDataArray[$frontDataIndex]['childs']['k'] = 0;
+							}
 							$treeDataArray[$frontDataIndex]['childs'][$tableIndex] = $childArray;
 						}
 					}
 				}
 				if (isset($lastAddedIndex) && is_array($treeDataArray[$lastAddedIndex]))	{
-					$treeDataArray[$lastAddedIndex]['last'] = true;
+					$treeDataArray[$lastAddedIndex]['last'] = TRUE;
 				}
 			}
 
@@ -532,22 +570,29 @@ if(!$gettreedata){
 		// create HTML data
 		while ($k <= $kMax)	{
 			$treeData = &$treeDataArray[$k];
-			$bHasChilds = false;
-			$bKassigned = false;
+			$bHasChilds = FALSE;
+			$bKassigned = FALSE;
 			$iconConnect = '';
 			$iconBottom = '';
-			$pm = false;
+			$pm = FALSE;
 			$row = $treeData['row'];
 			$uid = $row['uid'];
 			$parentIndex = $treeData['parentIndex'];
-			$parent = $treeData['parent'];
+			$parent = $treeData['parent'];			
 			$leaf = $treeData['leaf'];
-			$depth = $nextDepth;
+			
+			if (t3lib_div::testInt($parent))	{
+				$parentTreeData = &$treeDataArray[$parent];
+				$depth = $parentTreeData['depth'] + 1;
+			} else {
+				$depth = 0;
+			}
 			if (isset($parentIndex))	{
 				$isNextOpen = $this->expandNext($leaf, $uid);
-				$bHasChilds = (count ($treeData['childs']) > 0);
+				$childCount = count ($treeData['childs']);
+				$bHasChilds = ($childCount > 0);
 				if ($bHasChilds)	{
-					$pm = true;
+					$pm = TRUE;
 					if($isNextOpen) {
 						$iconConnect = 'minus';
 					} else {
@@ -555,44 +600,30 @@ if(!$gettreedata){
 					}
 
 					if ($isNextOpen) {
-						$childKey = key($treeData['childs']);
-						$childRow = current($treeData['childs']);
-						$treeDatachildKey = current ($childRow);
-						$actChildRowKey = 0;
+						$k = $this->processTreeData($treeDataArray, $k, $kStack, $stack); // put rest on stack
+						$bKassigned = TRUE;
+						$nextDepth = $depth + 1;
 
-						if (count($treeData['childs'][$childKey]) > 1)	{
-							unset ($treeData['childs'][$childKey][$actChildRowKey]);
+						if ($nextDepth <= $maxDepth) {
+							$lastArray[$nextDepth] = FALSE;
 						} else {
-							unset ($treeData['childs'][$childKey]);
-						}
-						if (count($treeData['childs']) >= 1)	{
-							$kStack++;
-							$stack[$kStack] = array($k => $treeData['childs']);
-						}
-						$nextDepth++;
-						$k = $treeDatachildKey;
-						$bKassigned = true;
-						if (($nextDepth <= $maxDepth)) {
-							$lastArray[$nextDepth] = false;
-						} else {
-							$lastArray[$nextDepth] = true;
+							$lastArray[$nextDepth] = TRUE;
 							// This Debug must remain here!
-							debug ('maximum recursion of '.$maxDepth.' has been reached for table ""'.$categoryData->table.'" in the Graytree Library!',__LINE__,__FILE__);
+							debug ('maximum recursion of '.$maxDepth.' has been reached for table ""'.$categoryData->table.'" in the Graytree Library!');
 						}
-					} else if (isset($parent))	{
-						$parentTreeData = $treeDataArray[$parent];
+					} else if (t3lib_div::testInt($parent))	{
 						$parentChilds = $parentTreeData['childs'];
 						$depthChilds = $parentChilds[$treeData['leaf']];
 						$endKey = end($depthChilds);
 
 						if ($k == $endKey)	{
-							$lastArray[$depth] = true;
+							$lastArray[$depth] = TRUE;
 						}
 					}
 				} else {
-					$lastArray[$depth + 1] = true;
+					$lastArray[$depth + 1] = TRUE;
 					$iconConnect = 'join';
-					// $isNextOpen = true;
+					// $isNextOpen = TRUE;
 				}
 			}
 
@@ -609,7 +640,7 @@ if(!$gettreedata){
 			}
 
 			if ($treeData['last']) {
-				$lastArray[$depth] = true;
+				$lastArray[$depth] = TRUE;
 				$iconBottom = 'bottom';
 			} else
 			{
@@ -639,39 +670,16 @@ if(!$gettreedata){
 
 			if (!$bKassigned) {
 				if ($kStack > 0)	{
-					$stackData = $stack[$kStack];
-					$childData = current($stackData);
-					$parentKey = key($stackData);
-					$parentTreeData = &$treeDataArray[$parentKey];
-
-					if (is_array($childData))	{
-						$childKey = key($childData);
-						$childRow = current($childData);
-
-						if (is_array($childRow))	{
-							$actChildRow = current ($childRow);
-							$k = $actChildRow;
-							$nextDepth = $parentTreeData['depth'] + 1;
-							$actChildRowKey = array_search($actChildRow, $childRow);
-						}
-	
-						if (count($childData[$childKey]) > 1)	{
-							unset ($childData[$childKey][$actChildRowKey]);
-							$stack[$kStack] = $childData;
-							$stack[$kStack] = array($parentKey => $childData);
-						} else {
-							unset ($childData[$childKey]);
-							$kStack--;
-						}
-					}
-
+					$kParent = $stack[$kStack];
+					$kStack--;
+					$k = $this->processTreeData($treeDataArray, $kParent, $kStack, $stack);	// fetch next from stack
 				} else {
 					break;
 				}
 			}
 
 			if ($kStack == 0 && (!$bHasChilds || !$isNextOpen))	{
-				while ($lastArray[$depth] == true)	{
+				while ($lastArray[$depth] == TRUE)	{
 					$depth--;
 				}
 				if ($depth == -1)	{
@@ -715,15 +723,19 @@ if(!$gettreedata){
 			$leafIndex = $v['leaf'];
 			$tempDataObj = &$this->graytree_db->getLeafData($leafIndex);
 			$tempViewObj = &$this->leafArray[$leafIndex];
-			$idAttr = htmlspecialchars($this->domIdPrefix.$tempDataObj->getId($v['row']).'_'.$v['bank']);
-			$out.='
-				<tr>
-					<td id="'.$idAttr.'">'.
-						$v['HTML'].
-						$tempViewObj->wrapTitle($tempViewObj->getTitleStr($v['row'],$titleLen),$v['row'],$v['bank']).
-					'</td>
-				</tr>
-			';
+			if (is_object($tempDataObj) && is_object($tempViewObj))	{
+				$idAttr = htmlspecialchars($this->domIdPrefix.$tempDataObj->getId($v['row']).'_'.$v['bank']);
+				$out.='
+					<tr>
+						<td id="'.$idAttr.'">'.
+							$v['HTML'].
+							$tempViewObj->wrapTitle($tempViewObj->getTitleStr($v['row'],$titleLen),$v['row'],$v['bank']).
+						'</td>
+					</tr>
+				';
+			} else {
+				break; // an error has occurred
+			}
 			$watchdog++;
 			if ($watchdog > $this->watchDogMax)	{
 				break;
@@ -924,7 +936,7 @@ if(!$gettreedata){
 	 ********************************/
 
 	/**
-	 * Returns true/false if the next level for $id should be expanded - based on data in $this->stored[][] and ->expandAll flag.
+	 * Returns TRUE/FALSE if the next level for $id should be expanded - based on data in $this->stored[][] and ->expandAll flag.
 	 * Extending parent function
 	 *
 	 * @param	integer		record id/key

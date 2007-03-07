@@ -1,2 +1,5 @@
+2007-03-07 Franz Holzinger <kontakt@fholzinger.com>
+	* fix bug 102: correct algorithm for using the stack
+
 2007-03-05 Franz Holzinger <kontakt@fholzinger.com>
 	* initial upload into SVN
