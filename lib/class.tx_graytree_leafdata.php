@@ -35,7 +35,7 @@
  * @author	René Fritz <r.fritz@colorcube.de>
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
- * $Id: class.tx_graytree_leafdata.php 316 2006-08-03 15:23:50Z franz $
+ * $Id$
  *
  */
 

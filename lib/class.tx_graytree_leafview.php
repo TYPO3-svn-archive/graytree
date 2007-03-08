@@ -33,7 +33,7 @@
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @see t3lib_browsetree, t3lib_pagetree
- * $Id: class.tx_graytree_leafview.php 218 2006-06-17 17:04:20Z franz $
+ * $Id$
  *
  */
 /**

@@ -40,7 +40,7 @@
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage graytree
- * $Id: class.tx_graytree_browsetree.php 218 2006-06-17 17:04:20Z franz $
+ * $Id$
  *
  */
 /**
@@ -140,9 +140,6 @@ class tx_graytree_browseTree {
 	 * @return	void
 	 */
 	function setExtIconMode($ext_IconMode)	{
-		
-		if (TYPO3_DLOG && GRAYTREE_BROWSETREE_DLOG) 
-			t3lib_div::devLog('class.tx_graytree_browsetree::setExtIconMode count($this->treeView->leafArray) : '. count($this->treeView->leafArray), GRAYTREE_EXTkey);					
 	
 		for ($i=0; $i<count($this->treeView->leafArray); ++$i) {
 			$tree = &$this->treeView->getLeafView($i);

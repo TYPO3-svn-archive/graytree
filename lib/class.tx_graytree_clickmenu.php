@@ -44,7 +44,7 @@
  * @package TYPO3
  * @subpackage graytree
  * @internal
- * $Id: class.tx_graytree_clickmenu.php 253 2006-06-30 20:27:45Z franz $
+ * $Id$
  *
  */
 /**
@@ -1093,8 +1093,10 @@ class tx_graytree_clickMenu {
 
 			foreach ($menuItems as $key=>$menuItem) {
 				t3lib_div::devLog('tx_graytree_clickMenu::printItems $menuItem['.$key.'] = '.$menuItem, GRAYTREE_EXTkey);
-				foreach ($menuItem as $key2=>$val2) {
-					t3lib_div::devLog('tx_graytree_clickMenu::printItems $menuItem['.$key2.'] = '.$val2, GRAYTREE_EXTkey);
+				if (is_array($menuItem))	{
+					foreach ($menuItem as $key2=>$val2) {
+						t3lib_div::devLog('tx_graytree_clickMenu::printItems $menuItem['.$key2.'] = '.$val2, GRAYTREE_EXTkey);
+					}
 				}
 			}
 		}
@@ -1153,9 +1155,11 @@ class tx_graytree_clickMenu {
 			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode *** Auflistung menuItems zu $item = '. $item, GRAYTREE_EXTkey);		
 
 			foreach ($menuItems as $key=>$menuItem) {
-				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key.'] = '.$menuItem, GRAYTREE_EXTkey);		
-				foreach ($menuItem as $key2=>$val2) {
-					t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key2.'] = '.$val2, GRAYTREE_EXTkey);		
+				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key.'] = '.$menuItem, GRAYTREE_EXTkey);
+				if(is_array($menuItem))	{
+					foreach ($menuItem as $key2=>$val2) {
+						t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key2.'] = '.$val2, GRAYTREE_EXTkey);		
+					}
 				}
 			}
 			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->isCMlayers() = '.$this->isCMlayers(), GRAYTREE_EXTkey);					
@@ -1204,7 +1208,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		}
 		
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-			t3lib_div::devLog('++++++++++++++++++++++++++++++++++++tx_graytree_clickMenu::printLayerJScode $script : ', GRAYTREE_EXTkey);					
+			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $script : ', GRAYTREE_EXTkey);					
 			$scriptarr = explode ("\n",$script);
 			foreach ($scriptarr as $key=>$val) {
 				t3lib_div::devLog($val, GRAYTREE_EXTkey);
@@ -1272,9 +1276,11 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 			reset($menuItems);
 			foreach ($menuItems as $key=>$menuItem) {
 				t3lib_div::devLog('tx_graytree_clickMenu::menuItemsForClickMenu $menuItems['.$key.'] = ', GRAYTREE_EXTkey);
-				foreach ($menuItem as $key=>$val) {
-					t3lib_div::devLog('tx_graytree_clickMenu::menuItemsForClickMenu $menuItem['.$key.'] = '.$val, GRAYTREE_EXTkey);
-				} 
+				if (is_array($menuItem))	{
+					foreach ($menuItem as $key=>$val) {
+						t3lib_div::devLog('tx_graytree_clickMenu::menuItemsForClickMenu $menuItem['.$key.'] = '.$val, GRAYTREE_EXTkey);
+					}
+				}
 			} 
 		}
 		$out=array();

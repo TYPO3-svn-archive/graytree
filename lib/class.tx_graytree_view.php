@@ -36,7 +36,7 @@
  * @package TYPO3
  * @subpackage t3lib
  * @see t3lib_browsetree, t3lib_pagetree
- * $Id: $
+ * $Id$
  *
  */
 /**
