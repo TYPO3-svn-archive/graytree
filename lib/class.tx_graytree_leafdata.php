@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2003 René Fritz (r.fritz@colorcube.de)
-*  (c) 2005-2006 Franz Holzinger <kontakt@fholzinger.com>
+*  (c) 2005-2007 Franz Holzinger <kontakt@fholzinger.com>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is

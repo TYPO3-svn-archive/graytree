@@ -30,7 +30,7 @@
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage tx_graytree
- * $Id: class.tx_graytree_cm1.php 158 2006-04-06 09:27:49Z franz $
+ * $Id$
  *
  *
  */

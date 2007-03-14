@@ -29,7 +29,7 @@
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage tx_graytree
- * $Id: class.tx_graytree_cmd_wizard.php 307 2006-07-26 22:23:14Z ingo $
+ * $Id$
  *
  *
  */

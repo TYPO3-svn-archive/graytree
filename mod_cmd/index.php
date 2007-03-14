@@ -30,7 +30,7 @@
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage tx_graytree
- * $Id: index.php 148 2006-04-04 14:17:44Z franz $
+ * $Id$
  *
  */
 /**

@@ -1,6 +1,6 @@
 <?php
-define('TYPO3_MOD_PATH', '../typo3conf/ext/graytree/mod_cmd/');
-$BACK_PATH='../../../../typo3/';
+define('TYPO3_MOD_PATH', 'ext/graytree/mod_cmd/');
+$BACK_PATH='../../../';
 
 $MCONF['name']='web_txgraytreeCmd';
 $MCONF['access']='';

@@ -33,7 +33,7 @@
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage tx_graytree
- * $Id: class.tx_graytree_db_list.php 362 2006-09-26 16:43:13Z ingo $
+ * $Id$
  *
  * 
  * db_list.php,v 1.21 2005/04/01 14:37:10 typo3

@@ -32,7 +32,7 @@
  * @maintainer	Ingo Schmitt <is@marketing-factory.de>
  * @package TYPO3
  * @subpackage tx_graytree
- * $Id: class.ux_alt_menu_functions.php 148 2006-04-04 14:17:44Z franz $
+ * $Id$
  *
  * 
  */

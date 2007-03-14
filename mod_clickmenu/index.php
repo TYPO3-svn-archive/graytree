@@ -37,7 +37,7 @@
  *
  * If you want to integrate a context menu in your scripts, please see template::getContextMenuCode()
  *
- * $Id: index.php 307 2006-07-26 22:23:14Z ingo $
+ * $Id$
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	René Fritz <r.fritz@colorcube.de>
@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage graytree
  * @see template::getContextMenuCode()
- * $Id: index.php 307 2006-07-26 22:23:14Z ingo $
+ * $Id$
  *
  */
 /**
