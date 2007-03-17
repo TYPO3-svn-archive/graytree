@@ -754,16 +754,6 @@ if(!$gettreedata){
 	 * @access private
 	 */
 	function initializePositionSaving()	{
-			// Get stored tree structure:
-		$this->stored=unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
-
-		if (is_array ($this->stored) && is_array ($this->stored[0]) && is_array ($this->stored[0][0]))	{
-			// ok
-		} else {
-			$this->stored = array(); // reinitialize damaged array
-			$this->savePosition();
-		}
-
 		$this->pmVar = 'PM';
 		if ($this->TCEforms_itemFormElName)	{
 			$this->pmVar = $this->treeName.'_PM';
@@ -772,6 +762,16 @@ if(!$gettreedata){
 			// PM action
 			// (If an plus/minus icon has been clicked, the PM GET var is sent and we must update the stored positions in the tree):
 		$PM = explode('_',t3lib_div::_GP($this->pmVar));	// 0: mount key, 1: table index, 2: set/clear boolean, 3: item ID (cannot contain "_"), 4: treeName
+
+			// Get stored tree structure:
+		$this->stored=unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
+
+		if (is_array ($this->stored) && is_array ($this->stored[0]) && is_array ($this->stored[0][0]) && (count($PM) == 5 || count($PM) == 1))	{
+			// ok
+		} else {
+			$this->stored = array(); // reinitialize damaged array
+			$this->savePosition();
+		}
 
 		if (count($PM) == 5 && $PM[4] == $this->treeName)	{
 			if (isset($this->MOUNTS[$PM[0]]))	{
