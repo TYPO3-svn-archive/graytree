@@ -81,7 +81,7 @@ require_once(t3lib_extmgm::extPath('graytree').'lib/class.tx_graytree_clickmenu.
 require_once(t3lib_extmgm::extPath('graytree').'lib/class.tx_graytree_div.php');
 
 
-#define('GRAYTREE_CLICKMENU_DLOG', '1');
+define('GRAYTREE_CLICKMENU_DLOG', '0');
 
 class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 
@@ -219,7 +219,7 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 	function main()	{
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::main', GRAYTREE_EXTkey);						
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::main', GRAYTREE_EXTkey);
 
 			// Initialize Clipboard object:
 		$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
@@ -237,6 +237,8 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 			include_once(t3lib_extMgm::extPath($this->extKey).'mod_clickmenu/class.tx_'.$this->extKey.'_clickmenu.php');
 			$clickMenuClass = 'tx_'.$this->extKey.'_clickMenu';
 		}
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::main $clickMenuClass='.$clickMenuClass, GRAYTREE_EXTkey);
 			// Create clickmenu object
 		$clickMenu = t3lib_div::makeInstance($clickMenuClass);
 

@@ -1,3 +1,6 @@
+2007-03-19 Franz Holzinger <kontakt@fholzinger.com>
+	* fix bug 247: show clickmenu on root category
+
 2007-03-14 Franz Holzinger <kontakt@fholzinger.com>
 	* fix bug 191: graytree may be installed also globally
 

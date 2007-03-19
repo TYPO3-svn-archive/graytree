@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2006 Franz Holzinger <kontakt@fholzinger.com>
+*  (c) 2006-2007 Franz Holzinger <kontakt@fholzinger.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -50,6 +50,8 @@
 require_once (PATH_t3lib.'class.t3lib_iconworks.php');
 require_once (PATH_t3lib.'class.t3lib_befunc.php');
 require_once (PATH_t3lib.'class.t3lib_div.php');
+
+define('GRAYTREE_LEAFVIEW_DLOG', '0'); // Switch for debugging error messages
 
 
 class tx_graytree_leafView {
@@ -139,6 +141,7 @@ class tx_graytree_leafView {
 	function wrapTitle($title,$row,$bank=0)	{
 		$res = '';
 		
+		if (TYPO3_DLOG && GRAYTREE_LEAFVIEW_DLOG) t3lib_div::devLog('tx_graytree_leafView::wrapTitle  $title = '. $title. ' $leaf = '.$leaf, GRAYTREE_EXTkey);
 		if ($this->isCategory)	{
 			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->graytree_leafData->getId($row).'_'.$bank.'\');';
 			$res = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';

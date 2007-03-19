@@ -34,7 +34,7 @@
  *
  */
 
-#define('GRAYTREE_DIV_DLOG', '1');
+define('GRAYTREE_DIV_DLOG', '0');
 
 class tx_graytree_div {
 
@@ -55,7 +55,7 @@ class tx_graytree_div {
 	 * @return	string		The link-wrapped input string.
 	 */
 	function clickMenuWrap($extKey, $str, $table, $pid='', $uid='', $listFrame=true, $addParams='', $enDisItems='', $cmdMod='', $clickMenuScript='')	{
-		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div clickMenuWrap $pid ='. $pid. ' $uid = '.$uid, GRAYTREE_EXTkey);
+		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div clickMenuWrap $table = '.$table.' pid ='. $pid. ' $uid = '.$uid, GRAYTREE_EXTkey);
 		$onClick = tx_graytree_div::clickMenuOnClick($extKey, $table, $pid, $uid, $listFrame, $addParams, $enDisItems, $cmdMod='', $clickMenuScript);
 		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div $onClick = '.$onClick, GRAYTREE_EXTkey);
 		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
@@ -87,7 +87,8 @@ class tx_graytree_div {
 		
 		$paramsArr = array('table'=>$table,'pid'=>$pid, 'uid'=>$uid,'listFrame'=>$listFrame,'enDisItems'=>$enDisItems);
 		$itemParam = tx_graytree_div::compilePipeParams($paramsArr);
-		
+		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div clickMenuOnClick  $itemParam = '. $itemParam, GRAYTREE_EXTkey);
+
 		$url = $clickMenuScript.'?id='.$pid.'&extKey='.$extKey.'&item='.rawurlencode($itemParam).$backPath.$cmdMod.$addParams;
 		$onClick = 'top.loadTopMenu(\''.$url.'\');'.template::thisBlur().'return false;';
 		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div::clickMenuOnClick $onClick = '. $onClick, GRAYTREE_EXTkey);
@@ -99,7 +100,7 @@ class tx_graytree_div {
 		$params = array();
 		
 		foreach($paramsArr as $key => $value) {
-			if ($value)	{
+			if (t3lib_div::testInt($value) || $value)	{
 				$params[] = $key.':'.$value;
 			}
 		} 

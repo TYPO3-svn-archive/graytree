@@ -48,61 +48,6 @@
  *
  */
 /**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  125: class clickMenu
- *  157:     function init($item)
- *  200:     function doDisplayTopFrameCM()
- *
- *              SECTION: DATABASE
- *  228:     function printDBClickMenu($table,$uid)
- *  315:     function printNewDBLevel($table,$uid)
- *  352:     function externalProcessingOfDBMenuItems($menuItems)
- *  364:     function processingByExtClassArray($menuItems,$table,$uid)
- *  383:     function urlRefForCM($url,$retUrl='',$hideCM=1)
- *  400:     function DB_copycut($table,$uid,$type)
- *  429:     function DB_paste($table,$uid,$type,$elInfo)
- *  450:     function DB_info($table,$uid)
- *  466:     function DB_history($table,$uid)
- *  485:     function DB_perms($table,$uid,$rec)
- *  504:     function DB_db_list($table,$uid,$rec)
- *  523:     function DB_moveWizard($table,$uid,$rec)
- *  544:     function DB_newWizard($table,$uid,$rec)
- *  567:     function DB_editAccess($table,$uid)
- *  585:     function DB_editPageHeader($uid)
- *  603:     function DB_edit($table,$uid)
- *  645:     function DB_new($table,$uid)
- *  670:     function DB_hideUnhide($table,$rec,$hideField)
- *  694:     function DB_delete($table,$uid,$elInfo)
- *  715:     function DB_view($id,$anchor='')
- *
- *              SECTION: FILE
- *  744:     function printFileClickMenu($path)
- *  808:     function externalProcessingOfFileMenuItems($menuItems)
- *  822:     function FILE_launch($path,$script,$type,$image)
- *  841:     function FILE_copycut($path,$type)
- *  867:     function FILE_delete($path)
- *  889:     function FILE_paste($path,$target,$elInfo)
- *
- *              SECTION: COMMON
- *  929:     function printItems($menuItems,$item)
- *  981:     function printLayerJScode($menuItems)
- * 1019:     function wrapColorTableCM($str)
- * 1042:     function menuItemsForTopFrame($menuItems)
- * 1059:     function menuItemsForClickMenu($menuItems)
- * 1094:     function linkItem($str,$icon,$onClick,$onlyCM=0,$dontHide=0)
- * 1118:     function excludeIcon($iconCode)
- * 1128:     function enableDisableItems($menuItems)
- * 1166:     function cleanUpSpacers($menuItems)
- * 1208:     function label($label)
- * 1217:     function isCMlayers()
- * 1227:     function frameLocation($str)
- *
- *
- * TOTAL FUNCTIONS: 43
- * (This index is automatically created/updated by the extension "extdeveval")
  *
  */
 
@@ -160,6 +105,9 @@ class tx_graytree_clickMenu {
 	 * @return	string		The clickmenu HTML content
 	 */
 	function init($item)	{
+
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::init $item = '.$item, GRAYTREE_EXTkey);
+
 			// Setting GPvars:
 		$this->cmLevel = intval(t3lib_div::_GP('cmLevel'));
 		$this->CB = t3lib_div::_GP('CB');
@@ -247,7 +195,7 @@ class tx_graytree_clickMenu {
 		$this->rec = t3lib_BEfunc::getRecord($table,$uid);
 		$menuItems=array();
 		$root=false;
-		if (!strcmp($uid,'0') && in_array($this->rootTableArray,$table))	{	// Rootlevel
+		if (!strcmp($uid,'0') && in_array($table, $this->rootTableArray))	{	// Rootlevel
 			$root=true;
 		}
 
@@ -445,6 +393,7 @@ class tx_graytree_clickMenu {
 	 * @return	array		Processed $menuItems array
 	 */
 	function processingByExtClassArray($menuItems,$table,$uid)	{
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::processingByExtClassArray $table = '.$table. '$uid = '.$uid, GRAYTREE_EXTkey);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::processingByExtClassArray', GRAYTREE_EXTkey);
 		if (is_array($this->extClassArray))	{
 			reset($this->extClassArray);
@@ -762,7 +711,7 @@ class tx_graytree_clickMenu {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new $pid = '.$pid, GRAYTREE_EXTkey);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new $editOnClick = '.$editOnClick, GRAYTREE_EXTkey);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new $this->PH_backPath = '.$this->PH_backPath, GRAYTREE_EXTkey);
-
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new $table = '.$table, GRAYTREE_EXTkey);
 
 		$linkText = trim($GLOBALS['LANG']->sL($this->languageFile.':tx_graytree_cm1.new_'.$table,1));
 		if (!$linkText)	{

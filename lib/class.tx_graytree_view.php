@@ -57,7 +57,7 @@ require_once (PATH_t3lib.'class.t3lib_iconworks.php');
 require_once (PATH_t3lib.'class.t3lib_befunc.php');
 require_once (PATH_t3lib.'class.t3lib_div.php');
 
-#define('GRAYTREE_VIEW_DLOG', '1');
+define('GRAYTREE_VIEW_DLOG', '0');
 
 
 class tx_graytree_View {
@@ -724,7 +724,7 @@ if(!$gettreedata){
 			$tempDataObj = &$this->graytree_db->getLeafData($leafIndex);
 			$tempViewObj = &$this->leafArray[$leafIndex];
 			if (is_object($tempDataObj) && is_object($tempViewObj))	{
-				$idAttr = htmlspecialchars($this->domIdPrefix.$tempDataObj->getId($v['row']).'_'.$v['bank']);
+				$idAttr = htmlspecialchars($this->domIdPrefix.$v['leaf'].'_'.$tempDataObj->getId($v['row']).'_'.$v['bank']);
 				$out.='
 					<tr>
 						<td id="'.$idAttr.'">'.
