@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************
 *  Copyright notice
 *
@@ -67,9 +68,9 @@
 
 
 unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+require_once('conf.php');
+require_once($BACK_PATH.'init.php');
+require_once($BACK_PATH.'template.php');
 
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
@@ -105,7 +106,7 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		global $BE_USER,$BACK_PATH;
 
 		parent::init();
-
+		
 			// Setting GPvars:
 		$this->backPath = t3lib_div::_GP('backPath');
 		$this->item = t3lib_div::_GP('item');
@@ -220,7 +221,7 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
 			t3lib_div::devLog('SC_tx_graytree_clickmenu::main', GRAYTREE_EXTkey);
-
+		
 			// Initialize Clipboard object:
 		$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
 		$clipObj->initializeClipboard();
@@ -304,7 +305,6 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/graytree/mod_clickmenu/index.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/graytree/mod_clickmenu/index.php']);
 }
-
 
 
 

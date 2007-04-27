@@ -1,3 +1,7 @@
+2007-04-27 Ingo Schmitt <is@marketing-factory.de>
+    * Fixed a bug running Graytree on windows, caused by a false module name
+    * Change Module Configuration and instantiation of classes to new TYPO3 style
+
 2007-03-19 Franz Holzinger <kontakt@fholzinger.com>
 	* fix bug 247: show clickmenu on root category
 

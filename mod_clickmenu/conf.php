@@ -1,6 +1,7 @@
 <?php
-define('TYPO3_MOD_PATH', 'ext/graytree/mod_clickmenu/');
-$BACK_PATH='../../../';
+define('TYPO3_MOD_PATH', '../typo3conf/ext/graytree/mod_clickmenu/');
+
+$BACK_PATH='../../../../typo3/';
 
 $MCONF['name']='web_txgraytreeClickmenu';
 $MCONF['access']='';
