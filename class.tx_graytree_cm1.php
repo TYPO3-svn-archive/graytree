@@ -3,7 +3,7 @@
 *  Copyright notice
 *  
 *  (c) 2004 René Fritz <r.fritz@colorcube.de>
-*  (c) 2005- Franz Holzinger <kontakt@fholzinger.com>
+*  (c) 2005-2007 Franz Holzinger <kontakt@fholzinger.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is 
@@ -35,7 +35,7 @@
  *
  */
 
-#define('GRAYTREE_CM1_DLOG', '1');
+define('GRAYTREE_CM1_DLOG', '0');
 
 
 class tx_graytree_cm1 {
