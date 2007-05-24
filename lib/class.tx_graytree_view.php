@@ -301,27 +301,6 @@ class tx_graytree_View {
 	}
 
 
-//	/**
-//	 * push the idlist with ids separated by comma in reverse order on the stack
-//	 *
-//	 * @param	array		the stack array
-//	 * @param	string		array of uids
-//	 * @param	integer		depth of the uids in the tree
-//	 * @return	void
-//	 */
-//	function pushIdlist (&$stack, &$uidArray, $depth, $parent_id) {
-//		$uidLast = end($uidArray);
-//
-//		$uidArray = array_reverse($uidArray);
-//
-//		foreach ($uidArray as $k => $v) {
-//			$isLast = (($v == $uidLast) || count($uidArray) == 1);
-//			$v['parent_id'] = $parent_id;
-//			array_push ($stack, array('row' => $v, 'depth' => $depth, 'last' => $isLast)); 		// store the uid and the depth on the stack
-//		}
-//	}
-
-
 	/********************************
 	 *
 	 * tree data buidling
@@ -578,9 +557,9 @@ if(!$gettreedata){
 			$row = $treeData['row'];
 			$uid = $row['uid'];
 			$parentIndex = $treeData['parentIndex'];
-			$parent = $treeData['parent'];			
+			$parent = $treeData['parent'];
 			$leaf = $treeData['leaf'];
-			
+
 			if (t3lib_div::testInt($parent))	{
 				$parentTreeData = &$treeDataArray[$parent];
 				$depth = $parentTreeData['depth'] + 1;
@@ -642,8 +621,7 @@ if(!$gettreedata){
 			if ($treeData['last']) {
 				$lastArray[$depth] = TRUE;
 				$iconBottom = 'bottom';
-			} else
-			{
+			} else	{
 				// nothing
 			}
 

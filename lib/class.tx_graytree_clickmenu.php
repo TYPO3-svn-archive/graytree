@@ -39,7 +39,7 @@
  * XHTML compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage graytree
@@ -53,6 +53,7 @@
 
 
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
+
 
 define('GRAYTREE_CLICKMENU_DLOG', '0'); // Switch for debugging error messages
 
@@ -200,7 +201,7 @@ class tx_graytree_clickMenu {
 		}
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu $root = '.$root, GRAYTREE_EXTkey);
-		
+
 			// If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
 		if (is_array($this->rec) || $root)	{
 				// Get permissions
@@ -222,8 +223,8 @@ class tx_graytree_clickMenu {
 
 			foreach ($this->disabledItems as $key=>$val) {
 				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu '. $key. '. '.$val, GRAYTREE_EXTkey);
-			} 
-			
+			}
+
 			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu  $this->disabledItems: $BE_USER->isPSet($lCP,$table,\'new\') =  '. $BE_USER->isPSet($lCP,$table,'new'), GRAYTREE_EXTkey);
 
 				// New:
@@ -244,7 +245,7 @@ class tx_graytree_clickMenu {
 				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('after $this->leafTableArray $count = '.$count, GRAYTREE_EXTkey);
 				foreach ($this->leafTableArray[$table] as $k => $leaftable)	{
 					if ($BE_USER->isPSet($lCP,$leaftable,'new'))	{
-						$menuItems['newp'.$count]=$this->DB_new($leaftable,$uid,$pid,$table);					
+						$menuItems['newp'.$count]=$this->DB_new($leaftable,$uid,$pid,$table);
 						foreach ($menuItems['newp'.$count] as $key=>$val) {
 							if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog($key. '. '.$val, GRAYTREE_EXTkey);
 						}
@@ -400,7 +401,7 @@ class tx_graytree_clickMenu {
 			while(list(,$conf)=each($this->extClassArray))	{
 				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::processingByExtClassArray  $conf[\'name\'] = '. $conf['name'], GRAYTREE_EXTkey);
 				$obj=t3lib_div::makeInstance($conf['name']);
-				$menuItems = $obj->main($this,$menuItems,$table,$uid);	// TODO: Das hier berücksichtigen
+				$menuItems = $obj->main($this,$menuItems,$table,$uid);	// TODO: Das hier berï¿½cksichtigen
 			}
 		}
 		return $menuItems;
@@ -677,7 +678,7 @@ class tx_graytree_clickMenu {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new *** $this->id = '.$this->id, GRAYTREE_EXTkey);
 
 //########################## TODO BEGIN
-//########################## Die defVals müssen konfigurierbar werden !!!
+//########################## Die defVals mï¿½ssen konfigurierbar werden !!!
 //##########################
 //
 //		$defVals = '&defVals[tx_commerce_categories][parent_category]=' .$uid;
@@ -686,7 +687,7 @@ class tx_graytree_clickMenu {
 //		
 //		
 //##########################
-//########################## Die defVals müssen konfigurierbar werden !!!
+//########################## Die defVals mï¿½ssen konfigurierbar werden !!!
 //########################## TODO END
 		if (is_array($this->defValsMask) && is_array($this->defValsMask[$table]))	{
 			if ($rootTable)	{

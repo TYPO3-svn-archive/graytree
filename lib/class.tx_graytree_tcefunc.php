@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2003-2004 René Fritz <r.fritz@colorcube.de>
-*  (c) 2005-2006 Franz Holzinger <kontakt@fholzinger.com>
+*  (c) 2005-2007 Franz Holzinger <kontakt@fholzinger.com>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -41,6 +41,7 @@
  *
  */
 
+require_once(t3lib_extmgm::extPath('graytree').'lib/class.tx_graytree_div.php');
 
 class tx_graytree_tceFunc {
 
@@ -338,7 +339,7 @@ class tx_graytree_tceFunc {
 					$itemTitle = $GLOBALS['LANG']->JScharCode(t3lib_BEfunc::getRecordTitle($itemTable, t3lib_BEfunc::getRecord($itemTable,$itemUid)));
 					$elValue = $itemTable.'_'.$itemUid;
 				}
-				$aOnClick.= 'setFormValueFromBrowseWin(\''.$fName.'\',unescape(\''.rawurlencode(str_replace('%20',' ',$elValue)).'\'),'.$itemTitle.');';
+				$aOnClick.= 'setFormValueFromBrowseWin(\''.$fName.'\',unescape(\''.rawurlencode(str_replace('%20',' ',$elValue)).'\'),'.tx_graytree_div::slashJS($itemTitle).');';
 
 #				$counter++;
 #				if ($params['maxitems'] && $counter >= $params['maxitems'])	{	break;	}	// Makes sure that no more than the max items are inserted... for convenience.
@@ -383,203 +384,6 @@ class tx_graytree_tceFunc {
 
 		return $str;
 	}
-
-
-
-
-
-
-
-
-	/**********************************************************
-	 *
-	 * Rendering of TCEform fields for private usage for tables
-	 *
-	 ************************************************************/
-
-
-
-
-//	/**
-//	 * [Describe function...]
-//	 *
-//	 * @param	[type]		$PA: ...
-//	 * @param	[type]		$fobj: ...
-//	 * @return	[type]		...
-//	 */
-//	function thumb ($PA, &$fobj) {
-//
-//		$config = $PA['fieldConf']['config'];
-//		$row = $PA['row'];
-//
-//		$itemOut='';
-//
-//$filePath = preg_replace('/\/$/','',$row['file_path']);
-//
-//		if ($row['media_type'] == 2 OR $row['media_type'] == 7
-//			 OR $row['file_type'] == 'pdf'
-//			 OR $row['file_type'] == 'ps'
-//			 OR $row['file_type'] == 'eps'
-//			 ) {
-//			if (!$PA['itemFormElValue'] && $row['file_name']) {
-//				$rowCopy=array();
-//				$rowCopy['file_name'] = $row['file_name'];
-//				$itemOut = '<div style="margin:4px;margin-right:10px;padding:8px;background-color:#fff;border:solid #888 1px;">'.t3lib_BEfunc::thumbCode($rowCopy,$PA['table'],'file_name',$fobj->backPath,'thumbs.php',$filePath,0,' align="middle" style="border:solid 1px #ccc;"',160).'</div>';
-//			}
-//#TODO ???
-//			if ($itemValue = $PA['itemFormElValue']) {
-//
-//				$rowCopy = array();
-//				$rowCopy[$config['field']] = $itemValue;
-//				$itemOut = '<div style="margin:4px;padding:2px;">'.t3lib_BEfunc::thumbCode($rowCopy,$PA['table'],$PA['field'],$fobj->backPath,'thumbs.php',$filePath,0,' align=middle').$itemValue.'</div>';
-//			} elseif (!$itemOut) {
-//				$itemOut = 'no thumbnail';
-//			}
-//		}
-//
-//
-//
-//		$out = '
-//								</table>
-//							</td>
-//							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
-//							<td width="1%" valign="top" align="center">'.$itemOut.'</td>
-//						</tr>
-//					</table>
-//				</td>
-//			</tr>
-//			<tr>
-//				<td colspan="2"><img src="clear.gif" width="1" height="5" alt="" /></td>
-//			</tr>';
-//
-//		return $out;
-//	}
-
-
-//	/**
-//	 * [Describe function...]
-//	 *
-//	 * @param	[type]		$PA: ...
-//	 * @param	[type]		$fobj: ...
-//	 * @return	[type]		...
-//	 */
-//	function file_mime_type ($PA, &$fobj) {
-//		$config = $PA['fieldConf']['config'];
-//		if($config['type']=='none') {
-//			$PA['itemFormElValue'] = $PA['row']['file_mime_type'].'/'.$PA['row']['file_mime_subtype'];
-//			$out = $fobj->getSingleField_typeNone($PA['table'], $PA['field'], $PA['row'], $PA);
-//		} else {
-//			$out = $fobj->getSingleField_SW($PA['table'], $PA['field'], $PA['row'], $PA);
-//		}
-//
-//		return $out;
-//	}
-//
-
-//	/**
-//	 * [Describe function...]
-//	 *
-//	 * @param	[type]		$PA: ...
-//	 * @param	[type]		$fobj: ...
-//	 * @return	[type]		...
-//	 */
-//	function fileUsage ($PA, &$fobj) {
-//		global $TCA;
-//
-//		$config = $PA['fieldConf']['config'];
-//		$itemOut = '';
-//
-//		$rows = $this->getRecordsByWhere('tt_content',
-//				"image REGEXP BINARY '[^, ]*".str_replace('.',"(_[0-9][0-9])?\.",$GLOBALS['TYPO3_DB']->quoteStr($PA['row']['file_name'],'tt_content'))."[^, ]*'",'uid,pid,image');
-//
-//		$config['rows']=0;
-//		if (is_array($rows)) {
-//			reset($rows);
-//			while(list(,$row)=each($rows)) {
-//				$pageRec = t3lib_BEfunc::getRecord ('pages',$row['pid'],"uid,pid,".$TCA['pages']['ctrl']['label']);
-//				$theIcon = '<img src="'.$fobj->backPath.t3lib_iconWorks::getIcon('pages',$pageRec).'" width="18" height="16" align="top" border="0" title="id='.$row[pid].'" alt="" />';
-//				$itemOut.= '<a href="#" onclick="'.htmlspecialchars('loadEditId('.$row['pid'].');').'">'.$theIcon.' '.t3lib_BEfunc::getRecordTitle('pages',$pageRec,1).', tt_content:'.$row['uid'].'</a><br />';
-//				$config['rows']++;
-//			}
-//		} else {
-//			$itemOut.= 'Wird nicht verwendet.';
-//		}
-//		if($config['rows']) {
-//
-//#TODO
-//			$fobj->extJSCODE.= "
-//			function loadEditId(id)	{
-//				if (top.goToModule)	{
-//					top.theMenu.recentuid=id;
-//					if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
-//						top.content.nav_frame.refresh_nav();
-//					}
-//					top.goToModule('web_layout');
-//				} else {
-//					top.theMenu.recentuid = id;
-//					top.modPane_web.click('modPane_web_layout');
-//				}
-//			}
-//		";
-//		}
-//		$config['pass_content'] = true;
-//		$config['fixedRows'] = true;
-//		$config['rows'] = min(5,$config['rows'])+1;
-//
-//		$out = $this->intoTemplate($fobj,$fieldTemplate,$itemOut,$PA,$fobj->sL($PA['label'])); #TODO: label??
-//
-//		return $out;
-//	}
-
-	/************************************************************
-	 *
-	 * Form element helper functions
-	 *
-	 ************************************************************/
-
-//	/**
-//	 * [Describe function...]
-//	 *
-//	 * @param	[type]		$$fobj: ...
-//	 * @param	[type]		$fieldTemplate: ...
-//	 * @param	[type]		$content: ...
-//	 * @param	[type]		$PA: ...
-//	 * @param	[type]		$label: ...
-//	 * @return	[type]		...
-//	 */
-//	function intoTemplate (&$fobj, &$fieldTemplate, &$content, $PA, $label='') {
-//		return $fobj->intoTemplate( array(
-//					'NAME'=>($label ? $label: $PA['label']),
-//					'ID'=>$PA['row']['uid'],
-//					'FIELD'=>$PA['field'],
-//					'TABLE'=>$PA['table'],
-//					'ITEM'=>$content,
-//					'HELP_ICON' => $fobj->helpTextIcon($PA['table'],$PA['field'],1)
-//				),
-//				$fieldTemplate);
-//	}
-
-//	/**
-//	 * [Describe function...]
-//	 *
-//	 * @param	[type]		$theTable: ...
-//	 * @param	[type]		$where: ...
-//	 * @param	[type]		$fieldList: ...
-//	 * @param	[type]		$endClause: ...
-//	 * @return	[type]		...
-//	 */
-//	function getRecordsByWhere($theTable,$where,$fieldList="*",$endClause='')	{
-//		global $TCA;
-//		if (is_array($TCA[$theTable])) {
-//			$del=t3lib_BEfunc::deleteClause($theTable);
-//			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fieldList, $theTable, $where.$del.' '.$endClause);
-//			$rows=array();
-//			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-//				$rows[] = $row;
-//			}
-//			if (count($rows))	return $rows;
-//		}
-//	}
 
 
 }

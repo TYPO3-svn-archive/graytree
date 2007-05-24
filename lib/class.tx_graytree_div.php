@@ -60,7 +60,8 @@ class tx_graytree_div {
 		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div $onClick = '.$onClick, GRAYTREE_EXTkey);
 		return '<a href="#" onclick="'.htmlspecialchars($onClick).'">'.$str.'</a>';
 	}
-		
+
+
 	/**
 	 * Makes click menu link (context sensitive menu)
 	 * Returns $str (possibly an <|img> tag/icon) wrapped in a link which will activate the context sensitive menu for the record ($table/$uid) or file ($table = file)
@@ -94,19 +95,20 @@ class tx_graytree_div {
 		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div::clickMenuOnClick $onClick = '. $onClick, GRAYTREE_EXTkey);
 		return $onClick;
 	}
-	
+
 
 	function compilePipeParams ($paramsArr) {
 		$params = array();
-		
+
 		foreach($paramsArr as $key => $value) {
 			if (t3lib_div::testInt($value) || $value)	{
 				$params[] = $key.':'.$value;
 			}
-		} 
+		}
 		return implode ('|', $params);
-	}	
-	
+	}
+
+
 	function decodePipeParams($paramStr) {
 		$paramsArr = array();
 		
@@ -118,6 +120,7 @@ class tx_graytree_div {
 		} 
 		return $paramsArr;
 	}
+
 
 	/**
 	 * Takes comma-separated lists and arrays and removes all duplicates
@@ -145,7 +148,8 @@ class tx_graytree_div {
 
 		return implode(',',t3lib_div::uniqueArray($listArray));
 	}
-			
+
+
 	/**
 	 * Extract a list of uid's from an item array
 	 *
@@ -186,7 +190,23 @@ class tx_graytree_div {
 	}
 
 
-			
+	/**
+	 * This function is used to escape any ' -characters when transferring text to JavaScript!
+	 * Function copied from DAM 1.0.7, lib/class.tx_dam_selprocbase.php
+	 *
+	 * @param   string      String to escape
+	 * @param   boolean     If set, also backslashes are escaped.
+	 * @param   string      The character to escape, default is ' (single-quote)
+	 * @return  string      Processed input string
+	 */
+	function slashJS($string,$extended=0,$char="'") {
+		if ($extended)	{
+			$string = str_replace ("\\", "\\\\", $string);
+		}
+		$rc = str_replace ($char, "\\".$char, $string);
+		return $rc;
+	}
+
 }
 
 

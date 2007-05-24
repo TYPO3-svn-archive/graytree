@@ -63,8 +63,8 @@ class tx_graytree_leafView {
 	var $backPath;
 	var $clickMenuScript; // alternative click menu script
 	var $extKey;	// caller extension key. Leaf this empty
-					// if you do not have a file class.tx_($extKey)_clickmenu.php with a class
-					// tx_($extKey)_clickMenu in a subfolder 'mod_clickmenu' which extends tx_graytree_clickMenu 
+			// if you do not have a file class.tx_($extKey)_clickmenu.php with a class
+			// tx_($extKey)_clickMenu in a subfolder 'mod_clickmenu' which extends tx_graytree_clickMenu 
 
 	/**
 	 * Icon file name for the table including the path.
