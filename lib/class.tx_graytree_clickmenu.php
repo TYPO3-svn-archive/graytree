@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2006 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2007 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,7 +39,7 @@
  * XHTML compliant
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
+ * @author	René Fritz <r.fritz@colorcube.de>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage graytree
@@ -55,7 +55,7 @@
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
 
 
-define('GRAYTREE_CLICKMENU_DLOG', '0'); // Switch for debugging error messages
+define('GRAYTREE_CLICKMENU_DLOG', '1'); // Switch for debugging error messages
 
 class tx_graytree_clickMenu {
 
@@ -114,7 +114,7 @@ class tx_graytree_clickMenu {
 		$this->CB = t3lib_div::_GP('CB');
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::init  $this->cmLevel = '. $this->cmLevel.' $this->CB ='.$this->CB, GRAYTREE_EXTkey);
-		
+
 			// Explode the incoming command:
 		$params = tx_graytree_div::decodePipeParams($item);
 
@@ -133,7 +133,6 @@ class tx_graytree_clickMenu {
 
 		$this->disabledItems = t3lib_div::trimExplode(',',$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.'.$TSkey.'.disableItems'),1);
 		$this->enDisItems = $params['enDisItems'];
-
 		$this->leftIcons = $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.leftIcons');
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::init  $this->cmLevel = '. $this->cmLevel, GRAYTREE_EXTkey);
@@ -219,7 +218,7 @@ class tx_graytree_clickMenu {
 				$this->editOK=1;
 			}
 
-			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu ***** $this->disabledItems: count =  '. count($this->disabledItems), GRAYTREE_EXTkey);
+			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu +++++ $this->disabledItems: count =  '. count($this->disabledItems), GRAYTREE_EXTkey);
 
 			foreach ($this->disabledItems as $key=>$val) {
 				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu '. $key. '. '.$val, GRAYTREE_EXTkey);
@@ -229,32 +228,47 @@ class tx_graytree_clickMenu {
 
 				// New:
 			if (!in_array('new',$this->disabledItems) && $BE_USER->isPSet($lCP,$table,'new')) {
+				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
+					t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu +++ HIER 1 :', GRAYTREE_EXTkey);
+				}
+
 				$menuItems['new']=$this->DB_new($table,$uid,$pid);
 				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-					 t3lib_div::devLog('*****tx_graytree_clickMenu::printDBClickMenu $menuItems[\'new\'] = '.$menuItems['new'], GRAYTREE_EXTkey);
+					 t3lib_div::devLog('++++++tx_graytree_clickMenu::printDBClickMenu after DB_new  $menuItems[\'new\'] = '.$menuItems['new'], GRAYTREE_EXTkey);
 	
 					foreach ($menuItems['new'] as $key=>$val) {
 						t3lib_div::devLog($key. '. '.$val, GRAYTREE_EXTkey);
 					}
 				}
 			}
-			
+
+			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
+				t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu +++ HIER 2 :', GRAYTREE_EXTkey);
+			}
+
 				// New for leaf tables
 			if (is_array($this->leafTableArray[$table]) && !in_array('new',$this->disabledItems))	{
 				$count = 0;
-				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('after $this->leafTableArray $count = '.$count, GRAYTREE_EXTkey);
+				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('after $this->leafTableArray['.$table.'] $count = '.$count, GRAYTREE_EXTkey);
 				foreach ($this->leafTableArray[$table] as $k => $leaftable)	{
 					if ($BE_USER->isPSet($lCP,$leaftable,'new'))	{
 						$menuItems['newp'.$count]=$this->DB_new($leaftable,$uid,$pid,$table);
+						if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('$menuItems[\'newp\''.$count.'] after DB_new with root table parameter ', GRAYTREE_EXTkey);
 						foreach ($menuItems['newp'.$count] as $key=>$val) {
 							if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog($key. '. '.$val, GRAYTREE_EXTkey);
 						}
 					}
 				}
-			}			
+			}
+
+			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
+				t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu +++ HIER 3 :', GRAYTREE_EXTkey);
+			}
 
 				// Info:
-			if(!in_array('info',$this->disabledItems) && !$root)	$menuItems['info']=$this->DB_info($table,$uid);
+			if(!in_array('info',$this->disabledItems) && !$root)	{
+				$menuItems['info']=$this->DB_info($table,$uid);
+			}
 
 //			$menuItems['spacer1']='spacer';
 //
@@ -295,7 +309,7 @@ class tx_graytree_clickMenu {
 		$menuItems = $this->externalProcessingOfDBMenuItems($menuItems);
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-			t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu *** letzte Auflistung menuItems :', GRAYTREE_EXTkey);
+			t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu +++ letzte Auflistung menuItems :', GRAYTREE_EXTkey);
 			foreach ($menuItems as $key=>$menuItem) {
 				t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu $menuItem['.$key.'] = '.$menuItem, GRAYTREE_EXTkey);
 				if (is_array($menuItem)) {
@@ -445,11 +459,12 @@ class tx_graytree_clickMenu {
 			$addParam['reloadListFrame'] = ($this->alwaysContentFrame ? 2 : 1);
 		}
 
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
 			"top.loadTopMenu('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
 		);
+		return $rc;
 	}
 
 	/**
@@ -472,11 +487,12 @@ class tx_graytree_clickMenu {
 		$conf = $loc.' && confirm('.$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.($elInfo[2]=='copy'?'copy':'move').'_'.$type),$elInfo[0],$elInfo[1])).')';
 		$editOnClick = 'if('.$conf.'){'.$loc.'.document.location=top.TS.PATH_typo3+\''.$this->clipObj->pasteUrl($table,$uid,0).'&redirect=\'+top.rawurlencode('.$this->frameLocation($loc.'.document').'); hideCM();}';
 
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('paste'.$type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_paste'.$type.'.gif','width="12" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
+		return $rc;
 	}
 
 	/**
@@ -489,11 +505,12 @@ class tx_graytree_clickMenu {
 	 */
 	function DB_info($table,$uid)	{
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_info', GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('info'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/zoom2.gif','width="12" height="12"').' alt="" />'),
 			"top.launchView('".$table."', '".$uid."'); return hideCM();"
 		);
+		return $rc;
 	}
 
 	/**
@@ -507,12 +524,13 @@ class tx_graytree_clickMenu {
 	function DB_history($table,$uid)	{
 		$url = 'show_rechis.php?element='.rawurlencode($table.':'.$uid);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_history $url = '.$url, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_history')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/history2.gif','width="13" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
+		return $rc;
 	}
 
 	/**
@@ -528,12 +546,14 @@ class tx_graytree_clickMenu {
 		$url = 'mod/web/perm/index.php?id='.$uid.($rec['perms_userid']==$GLOBALS['BE_USER']->user['uid']||$GLOBALS['BE_USER']->isAdmin()?'&return_id='.$uid.'&edit=1':'');
 		
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_perms $url = '.$url, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_perms')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/perm.gif','width="7" height="12"').' alt="" />'),
 			$this->urlRefForCM($url),
 			0
 		);
+
+		return $rc;
 	}
 
 	/**
@@ -550,12 +570,13 @@ class tx_graytree_clickMenu {
 		$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR').$this->PH_backPath.'db_list.php?table='.($table=='pages'?'':$table).'&id='.($table=='pages'?$uid:$rec['pid']);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_db_list $url = '.$url, GRAYTREE_EXTkey);
 		
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_db_list')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/list.gif','width="11" height="11"').' alt="" />'),
 			"top.nextLoadModuleUrl='".$url."';top.goToModule('web_list',1);",
 			0
 		);
+		return $rc;
 	}
 
 	/**
@@ -572,12 +593,13 @@ class tx_graytree_clickMenu {
 				($table=='tt_content'?'&sys_language_uid='.intval($rec['sys_language_uid']):'');	// Hardcoded field for tt_content elements.
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_moveWizard $url = '.$url, GRAYTREE_EXTkey);
 
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_moveWizard'.($table=='pages'?'_page':''))),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/move_'.($table=='pages'?'page':'record').'.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
+		return $rc;
 	}
 
 	/**
@@ -592,12 +614,14 @@ class tx_graytree_clickMenu {
 	function DB_newWizard($table,$uid,$rec)	{
 		$url = $this->newContentWizScriptPath.'?id='.$rec['pid'].'&sys_language_uid='.intval($rec['sys_language_uid']);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_newWizard $url = '.$url, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_newWizard')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/new_'.($table=='pages'?'page':'record').'.gif','width="'.($table=='pages'?'13':'16').'" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			0
 		);
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_newWizard $rc = '.$rc, GRAYTREE_EXTkey);
+		return $rc;
 	}
 
 	/**
@@ -612,12 +636,13 @@ class tx_graytree_clickMenu {
 		$addParam='&columnsOnly='.rawurlencode(implode(',',$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']).($table=='pages' ? ',extendToSubpages' :''));
 		$url = 'alt_doc.php?edit['.$table.']['.$uid.']=edit'.$addParam;
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_editAccess $url = '.$url, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editAccess')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/editaccess.gif','width="12" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
+		return $rc;
 	}
 
 	/**
@@ -630,12 +655,13 @@ class tx_graytree_clickMenu {
 	function DB_editPageHeader($uid)	{
 		$url = 'alt_doc.php?edit[pages]['.$uid.']=edit';
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_editPageHeader $url = '.$url, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLL('CM_editPageHeader')),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/edit2.gif','width="11" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
+		return $rc;
 	}
 
 	/**
@@ -649,12 +675,13 @@ class tx_graytree_clickMenu {
 	function DB_editRecord($table,$uid)	{
 		$url = 'alt_doc.php?edit['.$table.']['.$uid.']=edit';
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_editRecord $url = '.$url, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('edit'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/edit2.gif','width="12" height="12"').' alt="" />'),
 			$this->urlRefForCM($url,'returnUrl'),
 			1	// no top frame CM!
 		);
+		return $rc;
 	}
 
 
@@ -672,13 +699,15 @@ class tx_graytree_clickMenu {
 	 */
 	function DB_new($table,$uid,$pid,$rootTable='')	{
 		$editOnClick='';
-		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new *** $table = '.$table.' $uid = '.$uid.'$pid = '.$pid, GRAYTREE_EXTkey);
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
+			t3lib_div::devLog('tx_graytree_clickMenu::DB_new +++ $table = '.$table.' $uid = '.$uid.'$pid = '.$pid, GRAYTREE_EXTkey);
+		}
 
 		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
-		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new *** $this->id = '.$this->id, GRAYTREE_EXTkey);
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new +++ $this->id = '.$this->id, GRAYTREE_EXTkey);
 
 //########################## TODO BEGIN
-//########################## Die defVals mï¿½ssen konfigurierbar werden !!!
+//########################## Die defVals müssen konfigurierbar werden !!!
 //##########################
 //
 //		$defVals = '&defVals[tx_commerce_categories][parent_category]=' .$uid;
@@ -687,7 +716,7 @@ class tx_graytree_clickMenu {
 //		
 //		
 //##########################
-//########################## Die defVals mï¿½ssen konfigurierbar werden !!!
+//########################## Die defVals müssen konfigurierbar werden !!!
 //########################## TODO END
 		if (is_array($this->defValsMask) && is_array($this->defValsMask[$table]))	{
 			if ($rootTable)	{
@@ -697,11 +726,13 @@ class tx_graytree_clickMenu {
 			}
 		}
 
-		t3lib_div::devLog('tx_graytree_clickMenu::DB_new $table = '.$table, GRAYTREE_EXTkey);
-		t3lib_div::devLog('tx_graytree_clickMenu::DB_new $rootTable = '.$rootTable, GRAYTREE_EXTkey);
-		t3lib_div::devLog('tx_graytree_clickMenu::DB_new $uid = '.$uid, GRAYTREE_EXTkey);
-		t3lib_div::devLog('tx_graytree_clickMenu::DB_new $pid = '.$pid, GRAYTREE_EXTkey);
-		t3lib_div::devLog('tx_graytree_clickMenu::DB_new $defVals = '.$defVals, GRAYTREE_EXTkey);
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)	{
+			t3lib_div::devLog('tx_graytree_clickMenu::DB_new $table = '.$table, GRAYTREE_EXTkey);
+			t3lib_div::devLog('tx_graytree_clickMenu::DB_new $rootTable = '.$rootTable, GRAYTREE_EXTkey);
+			t3lib_div::devLog('tx_graytree_clickMenu::DB_new $uid = '.$uid, GRAYTREE_EXTkey);
+			t3lib_div::devLog('tx_graytree_clickMenu::DB_new $pid = '.$pid, GRAYTREE_EXTkey);
+			t3lib_div::devLog('tx_graytree_clickMenu::DB_new $defVals = '.$defVals, GRAYTREE_EXTkey);
+		}
 		$editOnClick='if('.$loc.'){'.$loc.'.document.location=top.TS.PATH_typo3+\''.
 			($this->listFrame?
 				'alt_doc.php?returnUrl=\'+top.rawurlencode('.$this->frameLocation($loc.'.document').')+\'&edit['.$table.'][-'.$uid.']=new' .$defVals .'\'':	 
@@ -746,17 +777,19 @@ class tx_graytree_clickMenu {
 	 * @internal
 	 */
 	function DB_delete($table,$uid,$elInfo)	{
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_delete $table = '.$table.' $uid = '.$uid.'$elInfo[0] = '.$elInfo, GRAYTREE_EXTkey);
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		$editOnClick='if('.$loc." && confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),$elInfo[0])).")){".$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
 			"&cmd[".$table.']['.$uid.'][delete]=1&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_delete $editOnClick = '.$editOnClick, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('delete'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
+		return $rc;
 	}
 
 	/**
@@ -768,12 +801,15 @@ class tx_graytree_clickMenu {
 	 * @internal
 	 */
 	function DB_view($id,$anchor='')	{
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_view $id = '.$id.' $anchor = '.$anchor, GRAYTREE_EXTkey);
+
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_view $id = '.$id, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('view'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/zoom.gif','width="12" height="12"').' alt="" />'),
 			t3lib_BEfunc::viewOnClick($id,$this->PH_backPath,t3lib_BEfunc::BEgetRootLine($id),$anchor).'return hideCM();'
 		);
+		return $rc;
 	}
 
 	/**
@@ -785,12 +821,13 @@ class tx_graytree_clickMenu {
 	 */
 	function DB_tempMountPoint($page_id)	{
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_tempMountPoint $page_id = '.$page_id, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('tempMountPoint'),
 			#$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/___.gif','width="12" height="12"').' alt="" />'),
 			'',
 			"if (top.content.nav_frame) { top.content.nav_frame.document.location = 'alt_db_navframe.php?setTempDBmount=".intval($page_id)."'; } return hideCM();"
 		);
+		return $rc;
 	}
 
 	/**
@@ -820,18 +857,19 @@ class tx_graytree_clickMenu {
 	 */
 	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')    {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_changeFlag $table = '.$table, GRAYTREE_EXTkey);
-	    $uid=$rec['uid'];
-	    $editOnClick='';
-	    $loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
-	    $editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
-	        "&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
+		$uid=$rec['uid'];
+		$editOnClick='';
+		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
+		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'tce_db.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
+		"&data[".$table.']['.$uid.']['.$flagField.']='.($rec[$flagField]?0:1).'&prErr=1&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
-	    return $this->linkItem(
-	        $title,
-	        $this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,$iconRelPath.'button_'.($rec[$flagField]?'un':'').$name.'.gif','width="11" height="10"').' alt="" />'),
-	        $editOnClick.'return false;',
-	        1
-	    );
+		$rc = $this->linkItem(
+			$title,
+			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,$iconRelPath.'button_'.($rec[$flagField]?'un':'').$name.'.gif','width="11" height="10"').' alt="" />'),
+			$editOnClick.'return false;',
+			1
+		);
+		return $rc;
 	}
 
 
@@ -901,7 +939,8 @@ class tx_graytree_clickMenu {
 		$menuItems = $this->externalProcessingOfFileMenuItems($menuItems);
 
 			// Return the printed elements:
-		return $this->printItems($menuItems,$icon.basename($path));
+		$rc = $this->printItems($menuItems,$icon.basename($path));
+		return $rc;
 	}
 
 
@@ -926,16 +965,19 @@ class tx_graytree_clickMenu {
 	 * @internal
 	 */
 	function FILE_launch($path,$script,$type,$image)	{
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::FILE_launch $path = '.$path.' $script = '.$script.' $type = '.$type.' $image = '.$image, GRAYTREE_EXTkey);
+
 		$loc='top.content'.(!$this->alwaysContentFrame?'.list_frame':'');
 
 		$editOnClick='if('.$loc.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$script.'?target='.rawurlencode($path)."&returnUrl='+top.rawurlencode(".$this->frameLocation($loc.'.document').");}";
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::FILE_launch $editOnClick = '.$editOnClick, GRAYTREE_EXTkey);
 
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image,'width="12" height="12"').' alt="" />'),
 			$editOnClick.'return hideCM();'
 		);
+		return $rc;
 	}
 
 	/**
@@ -947,6 +989,7 @@ class tx_graytree_clickMenu {
 	 * @internal
 	 */
 	function FILE_copycut($path,$type)	{
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::FILE_copycut $path = '.$path.' $type = '.$type, GRAYTREE_EXTkey);
 		$table = '_FILE';		// Pseudo table name for use in the clipboard.
 		$uid = t3lib_div::shortmd5($path);
 		if ($this->clipObj->current=='normal')	{
@@ -959,11 +1002,12 @@ class tx_graytree_clickMenu {
 		}
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::FILE_copycut $addParam = '.$addParam, GRAYTREE_EXTkey);
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
 			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
 		);
+		return $rc;
 	}
 
 	/**
@@ -974,16 +1018,18 @@ class tx_graytree_clickMenu {
 	 * @internal
 	 */
 	function FILE_delete($path)	{
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::FILE_delete $path = '.$path, GRAYTREE_EXTkey);
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		$editOnClick='if('.$loc." && confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),basename($path))).")){".$loc.".document.location=top.TS.PATH_typo3+'tce_file.php?redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').")+'".
 			"&file[delete][0][data]=".rawurlencode($path).'&vC='.$GLOBALS['BE_USER']->veriCode()."';hideCM();}";
 
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('delete'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/garbage.gif','width="11" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
+		return $rc;
 	}
 
 	/**
@@ -996,17 +1042,20 @@ class tx_graytree_clickMenu {
 	 * @internal
 	 */
 	function FILE_paste($path,$target,$elInfo)	{
+
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::FILE_paste $path = '.$path.' $target = '.$target.' $elInfo[0] = '.$elInfo[0], GRAYTREE_EXTkey);
 		$editOnClick='';
 		$loc='top.content'.($this->listFrame && !$this->alwaysContentFrame ?'.list_frame':'');
 		$conf=$loc." && confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.($elInfo[2]=='copy'?'copy':'move').'_into'),$elInfo[0],$elInfo[1])).")";
 		$editOnClick='if('.$conf.'){'.$loc.".document.location=top.TS.PATH_typo3+'".$this->clipObj->pasteUrl('_FILE',$path,0).
 			"&redirect='+top.rawurlencode(".$this->frameLocation($loc.'.document').'); hideCM();}';
 
-		return $this->linkItem(
+		$rc = $this->linkItem(
 			$this->label('pasteinto'),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_pasteinto.gif','width="12" height="12"').' alt="" />'),
 			$editOnClick.'return false;'
 		);
+		return $rc;
 	}
 
 
@@ -1102,31 +1151,31 @@ class tx_graytree_clickMenu {
 		$script='';
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode *** Auflistung menuItems zu $item = '. $item, GRAYTREE_EXTkey);		
+			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode *** Auflistung menuItems zu $item = '. $item, GRAYTREE_EXTkey);
 
 			foreach ($menuItems as $key=>$menuItem) {
 				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key.'] = '.$menuItem, GRAYTREE_EXTkey);
 				if(is_array($menuItem))	{
 					foreach ($menuItem as $key2=>$val2) {
-						t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key2.'] = '.$val2, GRAYTREE_EXTkey);		
+						t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $menuItem['.$key2.'] = '.$val2, GRAYTREE_EXTkey);
 					}
 				}
 			}
-			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->isCMlayers() = '.$this->isCMlayers(), GRAYTREE_EXTkey);					
+			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->isCMlayers() = '.$this->isCMlayers(), GRAYTREE_EXTkey);
 		}
 		if ($this->isCMlayers())	{	// Clipboard must not be submitted - then it's probably a copy/cut situation.
 			$frameName = '.'.($this->listFrame ? 'list_frame' : 'nav_frame');
 			if ($this->alwaysContentFrame)	$frameName='';
 
-			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $frameName = '.$frameName, GRAYTREE_EXTkey);					
-			
+			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $frameName = '.$frameName, GRAYTREE_EXTkey);
+
 				// Create the table displayed in the clickmenu layer:
 			$CMtable = '
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-CSM bgColor4">
 					'.implode('',$this->menuItemsForClickMenu($menuItems)).'
 				</table>';
 
-			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $CMtable = '.$CMtable, GRAYTREE_EXTkey);					
+			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $CMtable = '.$CMtable, GRAYTREE_EXTkey);
 			
 				// Wrap the inner table in another table to create outer border:
 			$CMtable = $this->wrapColorTableCM($CMtable);
@@ -1135,16 +1184,16 @@ class tx_graytree_clickMenu {
 			$CMtable = str_replace($this->PH_backPath,$this->backPath,$CMtable);
 			
 			if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $CMtable = '.$CMtable, GRAYTREE_EXTkey);					
-				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->PH_backPath = '.$this->PH_backPath, GRAYTREE_EXTkey);					
-				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->backPath = '.$this->backPath, GRAYTREE_EXTkey);					
+				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $CMtable = '.$CMtable, GRAYTREE_EXTkey);
+				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->PH_backPath = '.$this->PH_backPath, GRAYTREE_EXTkey);
+				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->backPath = '.$this->backPath, GRAYTREE_EXTkey);
 
 				$CMtablePart = explode(' ', $CMtable);
 				foreach ($CMtablePart as $k=>$v) {
-					t3lib_div::devLog(' '. $v, GRAYTREE_EXTkey);					
-				}	  
-	
-				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $frameName = '.$frameName, GRAYTREE_EXTkey);					
+					t3lib_div::devLog(' '. $v, GRAYTREE_EXTkey);
+				}
+
+				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $frameName = '.$frameName, GRAYTREE_EXTkey);
 				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->cmLevel = '.$this->cmLevel, GRAYTREE_EXTkey);
 			}
 
@@ -1156,9 +1205,9 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 '.(!$this->doDisplayTopFrameCM()?'hideCM();':'')
 );
 		}
-		
+
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $script : ', GRAYTREE_EXTkey);					
+			t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $script : ', GRAYTREE_EXTkey);	
 			$scriptarr = explode ("\n",$script);
 			foreach ($scriptarr as $key=>$val) {
 				t3lib_div::devLog($val, GRAYTREE_EXTkey);
@@ -1189,8 +1238,8 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 				</tr>
 			</table>';
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)
-			t3lib_div::devLog('tx_graytree_clickMenu::wrapColorTableCM $str = '.$str, GRAYTREE_EXTkey);					
-		
+			t3lib_div::devLog('tx_graytree_clickMenu::wrapColorTableCM $str = '.$str, GRAYTREE_EXTkey);
+
 		return $str;
 	}
 
@@ -1256,14 +1305,14 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 					</tr>';
 			}
 		}
-		
+
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
 			t3lib_div::devLog('tx_graytree_clickMenu::menuItemsForClickMenu $out: ', GRAYTREE_EXTkey);
 			foreach ($out as $key=>$val) {
 				t3lib_div::devLog($val, GRAYTREE_EXTkey);
 			} 
 		}
-		
+
 		return $out;
 	}
 
@@ -1359,7 +1408,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		$this->elCount++;
 
 		$WHattribs = t3lib_iconWorks::skinImg($this->backPath,'gfx/content_client.gif','width="7" height="10"',2);
-		
+
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::linkItem $WHattribs = '.$WHattribs, GRAYTREE_EXTkey);
 
 		$rc = array(
@@ -1373,14 +1422,15 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 			$onlyCM,
 			$dontHide
 		);
-		
+
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)	{
-			t3lib_div::devLog('tx_graytree_clickMenu::linkItem $rc: ', GRAYTREE_EXTkey);
+			t3lib_div::devLog('tx_graytree_clickMenu::linkItem $rc: Start', GRAYTREE_EXTkey);
 			foreach ($rc as $k => $v)	{
 			 	t3lib_div::devLog($k.' => ' .$v, GRAYTREE_EXTkey);
 			}
+			t3lib_div::devLog('tx_graytree_clickMenu::linkItem $rc: End', GRAYTREE_EXTkey);
 		}
-		
+
 		return $rc;
 	}
 
@@ -1411,7 +1461,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 			} else {
 				$only = FALSE;
 			}
-			
+
 				// Do filtering:
 			if ($only)	{	// Transfer ONLY elements which are mentioned (or are spacers)
 				$newMenuArray = array();
@@ -1428,7 +1478,7 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 				}
 			}
 		}
-		
+
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('enableDisableItems::excludeIcon $menuItems = '.$menuItems, GRAYTREE_EXTkey);
 
 			// Return processed menu items:
@@ -1463,7 +1513,6 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 		if (is_string($value) && $value=='spacer')	{
 			unset($menuItems[$key]);
 		}
-
 
 			// Remove last:
 		end($menuItems);

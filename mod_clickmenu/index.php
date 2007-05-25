@@ -87,15 +87,15 @@ define('GRAYTREE_CLICKMENU_DLOG', '0');
 class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 
 		// Internal, static: GPvar:
-	var $backPath;					// Back path.
-	var $item;						// Definition of which item the click menu should be made for.
-	var $reloadListFrame;			// Defines the name of the document object for which to reload the URL.
-	var $commandModule;				// Module to call instead of tce_db.php
+	var $backPath;			// Back path.
+	var $item;			// Definition of which item the click menu should be made for.
+	var $reloadListFrame;		// Defines the name of the document object for which to reload the URL.
+	var $commandModule;		// Module to call instead of tce_db.php
 
 		// Internal:
-	var $content='';				// Content accumulation
+	var $content='';		// Content accumulation
 	var $dontDisplayTopFrameCM=0;	// If set, then the clickmenu will NOT display in the top frame.
-	var $extKey;					// extension key of the caller
+	var $extKey;			// extension key of the caller
 
 	/**
 	 * Constructor function for script class.
@@ -106,7 +106,7 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		global $BE_USER,$BACK_PATH;
 
 		parent::init();
-		
+
 			// Setting GPvars:
 		$this->backPath = t3lib_div::_GP('backPath');
 		$this->item = t3lib_div::_GP('item');
@@ -115,10 +115,10 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		$this->extKey = t3lib_div::_GP('extKey');
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) { 
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->backPath = '.$this->backPath. ' $this->item = ' . $this->item, GRAYTREE_EXTkey);					
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->reloadListFrame = '. $this->reloadListFrame, GRAYTREE_EXTkey);					
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->commandModule = '. $this->commandModule, GRAYTREE_EXTkey);					
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->id ' . $this->id, GRAYTREE_EXTkey);					
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->backPath = '.$this->backPath. ' $this->item = ' . $this->item, GRAYTREE_EXTkey);
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->reloadListFrame = '. $this->reloadListFrame, GRAYTREE_EXTkey);
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->commandModule = '. $this->commandModule, GRAYTREE_EXTkey);
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->id ' . $this->id, GRAYTREE_EXTkey);
 		}
 
 			// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
@@ -144,13 +144,13 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		$this->doc->docType='xhtml_trans';
 		$this->doc->backPath = $BACK_PATH;
 
-		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::init  vorher $this->dontDisplayTopFrameCM = '. $this->dontDisplayTopFrameCM, GRAYTREE_EXTkey);					
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::init  vorher $this->dontDisplayTopFrameCM = '. $this->dontDisplayTopFrameCM, GRAYTREE_EXTkey);
 	
 			// Setting mode for display and background image in the top frame
 		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$BE_USER->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::init  nachher ***** $this->dontDisplayTopFrameCM = '. $this->dontDisplayTopFrameCM, GRAYTREE_EXTkey);					
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::init  nachher ***** $this->dontDisplayTopFrameCM = '. $this->dontDisplayTopFrameCM, GRAYTREE_EXTkey);	
 		
 		if ($this->dontDisplayTopFrameCM)	{
 			$this->doc->bodyTagId.= '-notop';
@@ -207,9 +207,9 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 	if('.$listFrameDoc.'){'.$listFrameDoc.'.document.location='.$listFrameDoc.'.document.location;}' :
 	'').'
 		');
-		
+
 	if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
-		t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->doc->JScode = '.$this->doc->JScode, GRAYTREE_EXTkey);						
+		t3lib_div::devLog('SC_tx_graytree_clickmenu::init $this->doc->JScode = '.$this->doc->JScode, GRAYTREE_EXTkey);
 	}
 
 	/**
@@ -253,12 +253,12 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		$this->content.=$this->doc->startPage('Context Sensitive Menu');
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::main $this->item = ' . $this->item, GRAYTREE_EXTkey);						
-		
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::main $this->item = ' . $this->item, GRAYTREE_EXTkey);
+
 			// Set content of the clickmenu with the incoming var, "item"
 		$content = $clickMenu->init($this->item);
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {  
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::main ANZEIGE ************* clickMenu ***** ', GRAYTREE_EXTkey);						
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::main ANZEIGE ************* clickMenu ***** ', GRAYTREE_EXTkey);
 			$contentarr = explode (" ", $content);
 			foreach ($contentarr as $key=>$val) {
 				t3lib_div::devLog('content = ' . $val, GRAYTREE_EXTkey);
@@ -274,7 +274,9 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 	 * @return	void
 	 */
 	function printContent()	{
-		t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent vor $this->doc->endPage() ', GRAYTREE_EXTkey);
+		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent vor $this->doc->endPage() ', GRAYTREE_EXTkey);
+		}
 		$this->content.= $this->doc->endPage();
 		
 		echo $this->content;
@@ -282,7 +284,7 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		$pos = 0;
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {  
-			t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent ANZEIGE ************* clickMenu ***** ', GRAYTREE_EXTkey);						
+			t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent ANZEIGE ************* clickMenu ***** ', GRAYTREE_EXTkey);
 
 			foreach ($content as $key=>$val) {
 				if (($pos = strpos($val, 'setLayerObj')) == 0) { 
@@ -297,7 +299,7 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 				}
 				
 			}
-		} 
+		}
 	}
 }
 
