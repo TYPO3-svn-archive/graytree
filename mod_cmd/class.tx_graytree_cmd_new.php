@@ -49,7 +49,7 @@
 require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 
 
-define('GRAYTREE_CMD_DLOG', '1');
+define('GRAYTREE_CMD_DLOG', '0');
 
 
 class tx_graytree_cmd_new extends t3lib_extobjbase {

@@ -592,10 +592,10 @@ if(!$gettreedata){
 						}
 					} else if (t3lib_div::testInt($parent))	{
 						$parentChilds = $parentTreeData['childs'];
-						$depthChilds = $parentChilds[$treeData['leaf']];
-						$endKey = end($depthChilds);
-
-						if ($k == $endKey)	{
+						$depthChilds = $parentChilds[$parentChilds ['k']];
+						$childKey = $depthChilds['k'];
+						$endKey = count($depthChilds) - 1;
+						if ($childKey == $endKey && $depthChilds == end($parentChilds))	{
 							$lastArray[$depth] = TRUE;
 						}
 					}
@@ -665,7 +665,6 @@ if(!$gettreedata){
 				}
 			}
 		}  // while ($k <= $kMax)	{
-
 
 		return $this->tree;
 	}

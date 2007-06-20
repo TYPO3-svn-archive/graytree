@@ -54,7 +54,7 @@ $LANG->includeLLFile('EXT:graytree/mod_cmd/locallang.php');
 // Module is available to everybody
 // $BE_USER->modAccess($MCONF,1);
 
-#define('GRAYTREE_CMD_DLOG', '1');
+define('GRAYTREE_CMD_DLOG', '0');
 
 
 

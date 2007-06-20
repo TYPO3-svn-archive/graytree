@@ -143,12 +143,18 @@ class tx_graytree_leafView {
 		
 		if (TYPO3_DLOG && GRAYTREE_LEAFVIEW_DLOG) t3lib_div::devLog('tx_graytree_leafView::wrapTitle  $title = '. $title. ' $leaf = '.$leaf, GRAYTREE_EXTkey);
 		if ($this->isCategory)	{
-			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->graytree_leafData->getId($row).'_'.$bank.'\');';
-			$res = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
+			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->graytree_leafData->getId($row).'_'.$bank.'\',\'\');';
 		} else {
 			$data = $this->getData();
-			$res = tx_graytree_div::clickMenuWrap($this->extKey, $title, $data->table, $row['pid'], $row['uid'], false, $addParams='', $enDisItems='', '', $this->clickMenuScript);
+			// $res = tx_graytree_div::clickMenuWrap($this->extKey, $title, $data->table, $row['pid'], $row['uid'], false, $addParams='', $enDisItems='', '', $this->clickMenuScript);
+			// +++
+			// $addParam='&columnsOnly='.rawurlencode(implode(',',$GLOBALS['TCA'][$data->table]['ctrl']['enablecolumns']));
+			$param = 'edit['.$data->table.']['.$row['uid'].']=edit'.$addParam;
+			$url = 'alt_doc.php';
+			$aOnClick = 'return jumpTo(\''.$param.'\',this,\''.$this->domIdPrefix.$this->graytree_leafData->getId($row).'_'.$bank.'\',\''.$url.'\');';		
 		}
+		$res = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
+
 		return $res;
 	}
 
@@ -175,7 +181,7 @@ class tx_graytree_leafView {
 		} elseif (!strcmp($this->ext_IconMode,'wrapIcon: titlelink'))	{
 
 			// unused for now
-			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$this->bank.'\');';
+			$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'_'.$this->bank.'\',\'\');';
 			$theIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$theIcon.'</a>';
 		}
 		return $theIcon;

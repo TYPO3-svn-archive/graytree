@@ -45,7 +45,7 @@ require_once ($BACK_PATH.'class.db_list_extra.inc');
 
 require_once(PATH_txgraytree.'lib/class.tx_graytree_clickmenu.php');
 
-#define('GRAYTREE_DB_LIST_DLOG', '1');
+#define('GRAYTREE_DB_LIST_DLOG', '0');
 
 
 

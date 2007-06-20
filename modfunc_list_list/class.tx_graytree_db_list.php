@@ -77,7 +77,7 @@ require_once(PATH_txgraytree.'modfunc_list_list/class.tx_graytree_db_list_extra.
 
 
 
-#define('GRAYTREE_CATEGORY_DLOG', '1');
+#define('GRAYTREE_CATEGORY_DLOG', '0');
 
 
 

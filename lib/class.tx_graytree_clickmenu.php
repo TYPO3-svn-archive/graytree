@@ -55,7 +55,7 @@
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
 
 
-define('GRAYTREE_CLICKMENU_DLOG', '1'); // Switch for debugging error messages
+define('GRAYTREE_CLICKMENU_DLOG', '0'); // Switch for debugging error messages
 
 class tx_graytree_clickMenu {
 
@@ -232,12 +232,15 @@ class tx_graytree_clickMenu {
 					t3lib_div::devLog('tx_graytree_clickMenu::printDBClickMenu +++ HIER 1 :', GRAYTREE_EXTkey);
 				}
 
-				$menuItems['new']=$this->DB_new($table,$uid,$pid);
-				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
-					 t3lib_div::devLog('++++++tx_graytree_clickMenu::printDBClickMenu after DB_new  $menuItems[\'new\'] = '.$menuItems['new'], GRAYTREE_EXTkey);
-	
-					foreach ($menuItems['new'] as $key=>$val) {
-						t3lib_div::devLog($key. '. '.$val, GRAYTREE_EXTkey);
+				$newItem = $this->DB_new($table,$uid,$pid);
+				if ($newItem) 	{
+					$menuItems['new']=$newItem;
+					if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
+						 t3lib_div::devLog('++++++tx_graytree_clickMenu::printDBClickMenu after DB_new  $menuItems[\'new\'] = '.$menuItems['new'], GRAYTREE_EXTkey);
+		
+						foreach ($menuItems['new'] as $key=>$val) {
+							t3lib_div::devLog($key. '. '.$val, GRAYTREE_EXTkey);
+						}
 					}
 				}
 			}

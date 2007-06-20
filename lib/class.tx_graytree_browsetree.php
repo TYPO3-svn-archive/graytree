@@ -51,7 +51,7 @@
  */
 
 
-#define('GRAYTREE_BROWSETREE_DLOG', '1');
+#define('GRAYTREE_BROWSETREE_DLOG', '0');
 
 
 class tx_graytree_browseTree {
