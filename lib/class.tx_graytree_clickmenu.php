@@ -38,7 +38,7 @@
  *
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	René Fritz <r.fritz@colorcube.de>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
@@ -53,7 +53,6 @@
 
 
 require_once (PATH_t3lib.'class.t3lib_clipboard.php');
-
 
 define('GRAYTREE_CLICKMENU_DLOG', '0'); // Switch for debugging error messages
 
@@ -710,7 +709,7 @@ class tx_graytree_clickMenu {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new +++ $this->id = '.$this->id, GRAYTREE_EXTkey);
 
 //########################## TODO BEGIN
-//########################## Die defVals müssen konfigurierbar werden !!!
+//########################## Die defVals mï¿½ssen konfigurierbar werden !!!
 //##########################
 //
 //		$defVals = '&defVals[tx_commerce_categories][parent_category]=' .$uid;
@@ -719,7 +718,7 @@ class tx_graytree_clickMenu {
 //		
 //		
 //##########################
-//########################## Die defVals müssen konfigurierbar werden !!!
+//########################## Die defVals mï¿½ssen konfigurierbar werden !!!
 //########################## TODO END
 		if (is_array($this->defValsMask) && is_array($this->defValsMask[$table]))	{
 			if ($rootTable)	{
