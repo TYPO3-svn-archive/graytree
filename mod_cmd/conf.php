@@ -1,7 +1,6 @@
 <?php
-$path = realpath('.');
-
-if (strstr($path, '/typo3conf/') !== FALSE)	{
+$path = realpath($_SERVER['SCRIPT_PATH']);
+if (strstr($path, 'typo3conf') !== false) 	{
 	define('TYPO3_MOD_PATH', '../typo3conf/ext/graytree/mod_cmd/');
 	$BACK_PATH='../../../../typo3/';
 } else {

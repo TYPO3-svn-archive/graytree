@@ -1,3 +1,6 @@
+2007-09-20 Ingo Schmitt <is@marketing-factory.de>
+* Fixed Bug concerning clickmenu on windows
+
 2007-06-20 Franz Holzinger <kontakt@fholzinger.com>
 * Some Changes concerning display of categories, see commerce change log
 * set devlog constant to 0

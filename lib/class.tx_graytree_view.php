@@ -30,7 +30,7 @@
  *
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
@@ -203,7 +203,7 @@ class tx_graytree_View {
 
 		reset($leafInfoArray);
 		foreach ($leafInfoArray as $key => $leaf) {
-			if (TYPO3_DLOG && GRAYTREE_VIEW_DLOG) t3lib_div::devLog('tx_graytree_View::init eingefügt wird '.$key . ' - '.$leaf, GRAYTREE_EXTkey);
+			if (TYPO3_DLOG && GRAYTREE_VIEW_DLOG) t3lib_div::devLog('tx_graytree_View::init eingefï¿½gt wird '.$key . ' - '.$leaf, GRAYTREE_EXTkey);
 
 			$view = &t3lib_div::makeInstance($leaf['view']);
 			$dum = &$graytree_db->getLeafData($key);
@@ -437,7 +437,7 @@ if(!$gettreedata){
 				if ($parentTable)	{
 					$parentTableArray[$itemData->table] = $parentTable;
 					$parentIndex = $leafIndexArray[$parentTable];
-					if ($parentIndex !== FALSE && $this->leafArray[$parentIndex]->usePM)	{
+					if ($parentIndex === TRUE && $this->leafArray[$parentIndex]->usePM)	{
 						$parentIndexArray[$itemData->table] = $parentIndex;
 					}
 				}
