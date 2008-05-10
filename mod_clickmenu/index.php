@@ -41,7 +41,7 @@
  * $Id$
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @author	Ren� Fritz <r.fritz@colorcube.de>
+ * @author	René Fritz <r.fritz@colorcube.de>
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notic
 *
-*  (c) 1999-2007 Kasper SkÂrh¯j (kasperYYYY@typo3.com)
+*  (c) 1999-2007 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights re‚served
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,8 +38,8 @@
  *
  * XHTML compliant
  *
- * @author	Kasper SkÂrh¯j <kasper@typo3.com>
- * @author	RenÈ Fritz <r.fritz@colorcube.de>
+ * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	René Fritz <r.fritz@colorcube.de>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage graytree

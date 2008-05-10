@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2006 Ren� Fritz (r.fritz@colorcube.de)
+*  (c) 2006 René Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is 
@@ -27,7 +27,7 @@
 /**
  * div functions
  *
- * @author	Ren� Fritz <r.fritz@colorcube.de>
+ * @author	René Fritz <r.fritz@colorcube.de>
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * $Id$
