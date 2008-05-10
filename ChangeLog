@@ -1,6 +1,11 @@
-2008-05-10 Franz Holzinger <contact@fholzinger.com>
-* This version will only work with TYPO3 3.8-4.1. Graytree 0.1.x are the only versions which work with PHP4.
-* only a maintenance release for the documentation and svn branch creation for 0.1.x.
+2008-05-10 Franz Holzinger <kontakt@fholzinger.com>
+**** Initial Release 0.2.0 ***********************
+**** This Version will only run for TYPO3 4.2+
+
+2008-05-10 Ingo Schmitt <is@marketing-factory.de>
+* Initial Update to work with TYPO3 4.2
+* Applied Patch from Benjamin Mack, to have 4.2 compatibility
+
 
 2008-04-25 Franz Holzinger <kontakt@fholzinger.com>
 * minor change to set $parentIndexArray

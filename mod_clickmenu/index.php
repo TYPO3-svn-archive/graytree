@@ -41,7 +41,7 @@
  * $Id$
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
@@ -147,14 +147,18 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)
 			t3lib_div::devLog('SC_tx_graytree_clickmenu::init  vorher $this->dontDisplayTopFrameCM = '. $this->dontDisplayTopFrameCM, GRAYTREE_EXTkey);
 	
-			// Setting mode for display and background image in the top frame
-		$this->dontDisplayTopFrameCM= $this->doc->isCMlayers() && !$BE_USER->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
+			// Setting the mode to display the clickmenu in the top frame or as a layer in the tree
+			// which is the default for 4.2, since there is no top frame anymore.
+		if ($this->doc->isCMlayers() && !$BE_USER->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame') 
+			|| (t3lib_div::compat_version('4.2.0'))) {
+			$this->dontDisplayTopFrameCM = true;
+		} else {
+			$this->dontDisplayTopFrameCM = false;
+		}
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG)  
 			t3lib_div::devLog('SC_tx_graytree_clickmenu::init  nachher ***** $this->dontDisplayTopFrameCM = '. $this->dontDisplayTopFrameCM, GRAYTREE_EXTkey);	
 		
-		if ($this->dontDisplayTopFrameCM)	{
-			$this->doc->bodyTagId.= '-notop';
-		}
+		
 
 			// Setting clickmenu timeout
 		$secs = t3lib_div::intInRange($BE_USER->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'),1,100,5);	// default is 5
@@ -264,8 +268,12 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 				t3lib_div::devLog('content = ' . $val, GRAYTREE_EXTkey);
 			}
 		}
-
-		$this->content.= $content;
+			// for the layers clickmenu, only the clickmenu table is needed
+		if ($this->dontDisplayTopFrameCM) {
+			$this->content = $content;
+		} else {
+			$this->content.= $content;
+		}
 	}
 
 	/**
@@ -277,15 +285,24 @@ class SC_tx_graytree_clickmenu extends t3lib_SCbase {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
 			t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent vor $this->doc->endPage() ', GRAYTREE_EXTkey);
 		}
-		$this->content.= $this->doc->endPage();
+		
+			// only add the end page tags if it is loaded in the topframe
+		if (!$this->dontDisplayTopFrameCM) {
+			$this->content .= $this->doc->endPage();
+		} else {
+			header('Content-type: text/xml; charset='.$GLOBALS['LANG']->charSet);
+			header('X-JSON: true');
+		}
+
+		// finally render the content
 		
 		echo $this->content;
-		$content = explode("\n" ,$this->content);
-		$pos = 0;
+		
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {  
 			t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent ANZEIGE ************* clickMenu ***** ', GRAYTREE_EXTkey);
-
+			$content = explode("\n" ,$this->content);
+			$pos = 0;
 			foreach ($content as $key=>$val) {
 				if (($pos = strpos($val, 'setLayerObj')) == 0) { 
 					t3lib_div::devLog('SC_tx_graytree_clickmenu::printContent $content = ' . $val, GRAYTREE_EXTkey);

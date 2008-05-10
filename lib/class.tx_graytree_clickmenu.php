@@ -1,9 +1,9 @@
 <?php
 /***************************************************************
-*  Copyright notice
+*  Copyright notic
 *
-*  (c) 1999-2007 Kasper Sk�rh�j (kasperYYYY@typo3.com)
-*  All rights reserved
+*  (c) 1999-2007 Kasper SkÂrh¯j (kasperYYYY@typo3.com)
+*  All rights re‚served
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -38,8 +38,8 @@
  *
  * XHTML compliant
  *
- * @author	Kasper Sk�rh�j <kasper@typo3.com>
- * @author	Ren� Fritz <r.fritz@colorcube.de>
+ * @author	Kasper SkÂrh¯j <kasper@typo3.com>
+ * @author	RenÈ Fritz <r.fritz@colorcube.de>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * @package TYPO3
  * @subpackage graytree
@@ -417,7 +417,7 @@ class tx_graytree_clickMenu {
 			while(list(,$conf)=each($this->extClassArray))	{
 				if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) t3lib_div::devLog('tx_graytree_clickMenu::processingByExtClassArray  $conf[\'name\'] = '. $conf['name'], GRAYTREE_EXTkey);
 				$obj=t3lib_div::makeInstance($conf['name']);
-				$menuItems = $obj->main($this,$menuItems,$table,$uid);	// TODO: Das hier ber�cksichtigen
+				$menuItems = $obj->main($this,$menuItems,$table,$uid);	// TODO: Das hier berÔøΩcksichtigen
 			}
 		}
 		return $menuItems;
@@ -464,8 +464,7 @@ class tx_graytree_clickMenu {
 		$rc = $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
-			"top.loadTopMenu('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
-		);
+			"showClickmenu_raw('".$this->clipObj->selUrlDB($table,$uid,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"		);
 		return $rc;
 	}
 
@@ -709,7 +708,7 @@ class tx_graytree_clickMenu {
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) 	t3lib_div::devLog('tx_graytree_clickMenu::DB_new +++ $this->id = '.$this->id, GRAYTREE_EXTkey);
 
 //########################## TODO BEGIN
-//########################## Die defVals m�ssen konfigurierbar werden !!!
+//########################## Die defVals mÔøΩssen konfigurierbar werden !!!
 //##########################
 //
 //		$defVals = '&defVals[tx_commerce_categories][parent_category]=' .$uid;
@@ -718,7 +717,7 @@ class tx_graytree_clickMenu {
 //		
 //		
 //##########################
-//########################## Die defVals m�ssen konfigurierbar werden !!!
+//########################## Die defVals mÔøΩssen konfigurierbar werden !!!
 //########################## TODO END
 		if (is_array($this->defValsMask) && is_array($this->defValsMask[$table]))	{
 			if ($rootTable)	{
@@ -1007,8 +1006,7 @@ class tx_graytree_clickMenu {
 		$rc = $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/clip_'.$type.($isSel==$type?'_h':'').'.gif','width="12" height="12"').' alt="" />'),
-			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
-		);
+			"showClickmenu_raw('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"		);
 		return $rc;
 	}
 
@@ -1199,13 +1197,19 @@ class tx_graytree_clickMenu {
 				t3lib_div::devLog('tx_graytree_clickMenu::printLayerJScode $this->cmLevel = '.$this->cmLevel, GRAYTREE_EXTkey);
 			}
 
-				// Create JavaScript section:
-			$script=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
-if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLayerObj)	{
-	top.content'.$frameName.'.setLayerObj(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
-}
-'.(!$this->doDisplayTopFrameCM()?'hideCM();':'')
-);
+			// Create JS Section
+			if ($this->dontDisplayTopFrameCM) {
+				$script = '<data><clickmenu><htmltable><![CDATA['.$CMtable.']]></htmltable><cmlevel>'.$this->cmLevel.'</cmlevel></clickmenu></data>';
+			} else {
+					// Create JavaScript section:
+				$script = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+					if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLayerObj)	{
+						top.content'.$frameName.'.setLayerObj(unescape("'.t3lib_div::rawurlencodeJS($CMtable).'"),'.$this->cmLevel.');
+					}
+					'.(!$this->doDisplayTopFrameCM() ? 'hideCM();' : '')
+				);
+			}
+			
 		}
 
 		if (TYPO3_DLOG && GRAYTREE_CLICKMENU_DLOG) {
@@ -1542,11 +1546,11 @@ if (top.content && top.content'.$frameName.' && top.content'.$frameName.'.setLay
 
 	/**
 	 * Returns true if there should be writing to the div-layers (commands sent to clipboard MUST NOT write to div-layers)
-	 *
-	 * @return	boolean
+	 * is always true in TYPO3 4.2 and above, as there is no topframe anymore	 * @return	boolean
 	 */
 	function isCMlayers()	{
-		return $GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB;
+		return (($GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB) || (t3lib_div::compat_version('4.2.0')));
+	
 	}
 
 	/**

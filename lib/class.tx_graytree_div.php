@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *  
-*  (c) 2006 René Fritz (r.fritz@colorcube.de)
+*  (c) 2006 Renï¿½ Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is 
@@ -27,7 +27,7 @@
 /**
  * div functions
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
  * @author	Franz Holzinger <kontakt@fholzinger.com>
  * @maintainer	Franz Holzinger <kontakt@fholzinger.com>
  * $Id$
@@ -91,7 +91,7 @@ class tx_graytree_div {
 		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div clickMenuOnClick  $itemParam = '. $itemParam, GRAYTREE_EXTkey);
 
 		$url = $clickMenuScript.'?id='.$pid.'&extKey='.$extKey.'&item='.rawurlencode($itemParam).$backPath.$cmdMod.$addParams;
-		$onClick = 'top.loadTopMenu(\''.$url.'\');'.template::thisBlur().'return false;';
+		$onClick = 'showClickmenu_raw(\''.$url.'\');'.template::thisBlur().'return false;';
 		if (TYPO3_DLOG && GRAYTREE_DIV_DLOG) t3lib_div::devLog('tx_graytree_div::clickMenuOnClick $onClick = '. $onClick, GRAYTREE_EXTkey);
 		return $onClick;
 	}
@@ -191,13 +191,19 @@ class tx_graytree_div {
 
 
 	/**
-	 * This function is used to escape any ' -characters when transferring text to JavaScript!
-	 * Function copied from DAM 1.0.7, lib/class.tx_dam_selprocbase.php
+	 * This function is used to escape any ' -characters when transferring text to JavaScript!
+
+	 * Function copied from DAM 1.0.7, lib/class.tx_dam_selprocbase.php
+
 	 *
-	 * @param   string      String to escape
-	 * @param   boolean     If set, also backslashes are escaped.
-	 * @param   string      The character to escape, default is ' (single-quote)
-	 * @return  string      Processed input string
+	 * @param   string      String to escape
+
+	 * @param   boolean     If set, also backslashes are escaped.
+
+	 * @param   string      The character to escape, default is ' (single-quote)
+
+	 * @return  string      Processed input string
+
 	 */
 	function slashJS($string,$extended=0,$char="'") {
 		if ($extended)	{
