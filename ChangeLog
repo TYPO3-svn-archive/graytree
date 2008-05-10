@@ -1,3 +1,6 @@
+2008-05-10 Franz Holzinger <contact@fholzinger.com>
+* This version will only work with TYPO3 3.8-4.1
+
 2008-04-25 Franz Holzinger <kontakt@fholzinger.com>
 * minor change to set $parentIndexArray
 
